@@ -20,3 +20,4 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/teste', 'TesteController@index')->name('teste');
 
 Route::resource('fabricantes', 'FabricanteController');
+Route::resource('setores', 'SetorController');

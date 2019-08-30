@@ -34,7 +34,7 @@
           <ul class="treeview-menu">
             <li><a href="{{route('setores.index')}}"><i class="fa fa-circle-o"></i> Setores</a></li>
             <li><a href="{{route('fabricantes.index')}}"><i class="fa fa-circle-o"></i> Fabricantes</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Tipos</a></li>
+            <li><a href="{{route('tipos.index')}}"><i class="fa fa-circle-o"></i> Tipos</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i> Modelos</a></li>           
             <li class="treeview" style="height: auto;">
               <a href="#"><i class="fa fa-circle-o"></i> Localizações

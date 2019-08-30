@@ -21,3 +21,4 @@ Route::get('/teste', 'TesteController@index')->name('teste');
 
 Route::resource('fabricantes', 'FabricanteController');
 Route::resource('setores', 'SetorController');
+Route::resource('tipos', 'TipoController');

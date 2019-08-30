@@ -11,14 +11,35 @@
 |
 */
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
+Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
+//Grupo de rotas protegidas da área administrativa
+Route::group(['middleware' => 'auth','prefix' => '/'], function(){
+    Route::get('/', function () {
+      return view('site/home');
+    });
 
-Route::get('/teste', 'TesteController@index')->name('teste');
+    Route::get('/home', function () {
+        return view('site/home');
+      });
 
-Route::resource('fabricantes', 'FabricanteController');
-Route::resource('setores', 'SetorController');
-Route::resource('tipos', 'TipoController');
+    Route::get('/dashboard', function () {
+        return view('site/home');
+      });
+
+    /*Route::get('/', function () {
+        return view('welcome');
+    });*/
+
+    Route::get('/', 'HomeController@index')->name('home');
+
+    Route::get('/teste', 'TesteController@index')->name('teste');
+
+    Route::resource('fabricantes', 'FabricanteController');
+    Route::resource('setores', 'SetorController');
+    Route::resource('tipos', 'TipoController');
+
+    Auth::routes();
+
+    Route::get('/home', 'HomeController@index')->name('home');
+});

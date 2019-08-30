@@ -6,14 +6,23 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-         //Monta o breadcrumb
-         $caminhos = [
-            ['url'=>'','titulo'=>'Cadastro'],
-            ['url'=>'','titulo'=>'Categorias']
-          ];
-        
-        return view('home', compact('caminhos'));        
+        return view('home');
     }
 }

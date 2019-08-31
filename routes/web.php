@@ -37,9 +37,7 @@ Route::group(['middleware' => 'auth','prefix' => '/'], function(){
 
     Route::resource('fabricantes', 'FabricanteController');
     Route::resource('setores', 'SetorController');
-    Route::resource('tipos', 'TipoController');
-
-    Auth::routes();
+    Route::resource('tipos', 'TipoController');   
 
     Route::get('/home', 'HomeController@index')->name('home');
 });

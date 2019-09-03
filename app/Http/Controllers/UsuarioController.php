@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -56,38 +57,30 @@ class UsuarioController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        try
-        {
-          $rules=[
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-          ];
-  
-          $validator = Validator::make($request->all(), $rules);
-          if($validator->fails())
-            return response()->json([
-              'fail' => true,
-              'errors' => $validator->errors()
-            ], 200);
-  
-            //Insere no banco de dados
-            //$usuario = User::create($request->all());
+    {       
+      $rules=[
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:6|confirmed',
+      ];
 
-            $usuario = User::create([
-                'name' => $request['name'],
-                'email' => $request['email'],
-                'password' => Hash::make($request['password']),
-            ]);
-  
-            return response()->json([
-              'fail' => false,
-              'redirect_url' => url('usuarios')
-            ]);
-        } catch (\Exception $e) {
-          return response(['error' => $e->getMessage()],500);
-        }
+      $validator = Validator::make($request->all(), $rules);
+      if($validator->fails())
+        return response()->json([
+          'fail' => true,
+          'errors' => $validator->errors()
+        ], 200);
+
+        $usuario = User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
+
+        return response()->json([
+          'fail' => false,
+          'redirect_url' => url('usuarios')
+        ]);      
     }
 
     /**
@@ -130,38 +123,33 @@ class UsuarioController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        try
-        {
-            $rules=[
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'email' => Rule::unique('users')->ignore($id),
-                'password' => 'required|string|min:6|confirmed',
-              ];
-  
-            $validator = Validator::make($request->all(), $rules);
-            if($validator->fails())
-                return response()->json([
-                'fail' => true,
-                'errors' => $validator->errors()
-                ]);           
+    {       
+      $rules=[
+          'name' => 'required|string|max:255',
+          'email' => 'required|string|email|max:255|unique:users',
+          'email' => Rule::unique('users')->ignore($id),
+          'password' => 'required|string|min:6|confirmed',
+        ];
 
-            $usuario = User::find($id);
+      $validator = Validator::make($request->all(), $rules);
+      if($validator->fails())
+          return response()->json([
+          'fail' => true,
+          'errors' => $validator->errors()
+          ]);           
 
-            $usuario->name = $request['name'];
-            $usuario->email = $request['email'];
-            $usuario->password = Hash::make($request['password']);
+      $usuario = User::find($id);
 
-            $usuario->save();           
+      $usuario->name = $request['name'];
+      $usuario->email = $request['email'];
+      $usuario->password = Hash::make($request['password']);
 
-            return response()->json([
-            'fail' => false,
-                'redirect_url' => url('usuarios')
-            ], 200);
-        } catch (\Exception $e) {
-            return response(['error' => $e->getMessage()],500);
-        }
+      $usuario->save();           
+
+      return response()->json([
+      'fail' => false,
+          'redirect_url' => url('usuarios')
+      ], 200);       
     }
 
     /**

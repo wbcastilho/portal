@@ -24,7 +24,7 @@
             <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
           </ul>
         </li>
-        <li class="treeview">
+        <li class="treeview {{ Request::segment(1) == 'usuarios' || Request::segment(2) == 'usuarios' || Request::segment(1) == 'setores' || Request::segment(2) == 'setores' || Request::segment(1) == 'fabricantes' || Request::segment(2) == 'fabricantes' || Request::segment(1) == 'tipos' || Request::segment(2) == 'tipos' || Request::segment(1) == 'modelos' || Request::segment(2) == 'modelos' ? 'active' : '' }}">
           <a href="#">
             <i class="fa fa-pencil-square-o"></i> <span>Cadastros</span>
             <span class="pull-right-container">
@@ -32,10 +32,11 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{{route('setores.index')}}"><i class="fa fa-circle-o"></i> Setores</a></li>
-            <li><a href="{{route('fabricantes.index')}}"><i class="fa fa-circle-o"></i> Fabricantes</a></li>
-            <li><a href="{{route('tipos.index')}}"><i class="fa fa-circle-o"></i> Tipos</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Modelos</a></li>           
+            <li class="{{ Request::segment(1) == 'usuarios' || Request::segment(2) == 'usuarios' ? 'active' : ''}}"><a href="{{route('usuarios.index')}}"><i class="fa fa-circle-o"></i> Usuários</a></li>
+            <li class="{{ Request::segment(1) == 'setores' || Request::segment(2) == 'setores' ? 'active' : ''}}"><a href="{{route('setores.index')}}"><i class="fa fa-circle-o"></i> Setores</a></li>
+            <li class="{{ Request::segment(1) == 'fabricantes' || Request::segment(2) == 'fabricantes' ? 'active' : ''}}"><a href="{{route('fabricantes.index')}}"><i class="fa fa-circle-o"></i> Fabricantes</a></li>
+            <li class="{{ Request::segment(1) == 'tipos' || Request::segment(2) == 'tipos' ? 'active' : ''}}"><a href="{{route('tipos.index')}}"><i class="fa fa-circle-o"></i> Tipos</a></li>
+            <li class="{{ Request::segment(1) == 'modelos' || Request::segment(2) == 'modelos' ? 'active' : ''}}"><a href="#"><i class="fa fa-circle-o"></i> Modelos</a></li>           
             <li class="treeview" style="height: auto;">
               <a href="#"><i class="fa fa-circle-o"></i> Localizações
                 <span class="pull-right-container">

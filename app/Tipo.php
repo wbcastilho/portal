@@ -14,4 +14,9 @@ class Tipo extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function modelo()
+    {
+      return $this->belongsToMany('App\Modelo');
+    }
 }

@@ -13,6 +13,17 @@
 </div>
 
 <div class="row">
+    <div class="form-group col-md-4 col-sm-4 col-xs-12 {{ $errors->has('nivel_id') ? 'has-error' : ''}}">
+        <label for="nivel_id">Nível</label>        
+        <select id="nivel_id" name="nivel_id" class="form-control">
+            @foreach($niveis as $nivel)
+            <option {{ (isset($usuario->nivel_id) && $usuario->nivel_id ==  $nivel->id) || old('nivel_id') ==  $nivel->id ? 'selected' : '' }} value="{{$nivel->id}}">{{$nivel->nome}}</option>
+            @endforeach
+        </select>       
+    </div>
+</div>
+
+<div class="row">
     <div class="form-group col-md-3 col-sm-3 col-xs-12 {{ $errors->has('password') ? 'has-error' : ''}}">
         <label for="password">Senha</label>
         <input id="password" type="password" name="password" class="form-control" value="">

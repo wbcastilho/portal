@@ -50,6 +50,7 @@
           <tr>                
               <th style="width: 10px">Cód.</th>
               <th>Nome</th>         
+              <th style="width: 150px">Nível</th>         
               <th style="width: 90px">Ação</th>                                        
           </tr>
       </thead>
@@ -59,6 +60,7 @@
                 <tr>                             
                     <td class="text-center" style="vertical-align:middle;">{{ $usuario->id }}</td>
                     <td style="vertical-align:middle;">{{ $usuario->name }}</td>
+                    <td style="vertical-align:middle;">{{ $usuario->nivel->nome }}</td>
                     <td>                         
                     <a href="{{ route('usuarios.edit',$usuario->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
                     <button title="Deletar" class="btn btn-danger btn-sm btnExcluir"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $usuario->id }}" class="hidDeleteId"></button>                                   

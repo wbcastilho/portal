@@ -26,4 +26,9 @@ class User extends Authenticatable
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function nivel()
+    {
+      return $this->belongsTo('App\Nivel');
+    }
 }

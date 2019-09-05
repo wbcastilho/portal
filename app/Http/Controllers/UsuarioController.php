@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Nivel;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -20,8 +21,7 @@ class UsuarioController extends Controller
     {
         $searchText=trim($request->get('searchText'));
 
-        //Faz a consulta no banco com paginação
-        $usuarios = User::where('name', 'LIKE', $searchText . '%')->where('id', '>', 0)->orderBy("name","ASC")->paginate(10);
+        $usuarios = User::with('nivel')->where('name', 'LIKE', $searchText . '%')->where('id', '>', 0)->orderBy("name","ASC")->paginate(10);      
 
         //Monta o breadcrumb
         $caminhos = [
@@ -40,14 +40,16 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-          //Monta o breadcrumb
-          $caminhos = [
-            ['url'=>'','titulo'=>'Cadastros'],
-            ['url'=>route('usuarios.index'),'titulo'=>'Usuários'],
-            ['url'=>'','titulo'=>'Formulário']
-          ];
+      $niveis = Nivel::orderBy("id","DESC")->get();
+
+      //Monta o breadcrumb
+      $caminhos = [
+        ['url'=>'','titulo'=>'Cadastros'],
+        ['url'=>route('usuarios.index'),'titulo'=>'Usuários'],
+        ['url'=>'','titulo'=>'Formulário']
+      ];
   
-          return view('site.usuarios.adicionar', compact('caminhos'));
+      return view('site.usuarios.adicionar', compact('caminhos', 'niveis'));
     }
 
     /**
@@ -61,6 +63,7 @@ class UsuarioController extends Controller
       $rules=[
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:users',
+        'nivel_id' => 'required',
         'password' => 'required|string|min:6|confirmed',
       ];
 
@@ -74,6 +77,7 @@ class UsuarioController extends Controller
         $usuario = User::create([
             'name' => $request['name'],
             'email' => $request['email'],
+            'nivel_id' => $request['nivel_id'],
             'password' => Hash::make($request['password']),
         ]);
 
@@ -105,6 +109,8 @@ class UsuarioController extends Controller
        //Faz a consulta pesquisando pelo id
         $usuario = User::find($id);
 
+        $niveis = Nivel::orderBy("id","DESC")->get();
+
         //Monta o breadcrumb
          $caminhos = [
             ['url'=>'','titulo'=>'Cadastro'],
@@ -112,7 +118,7 @@ class UsuarioController extends Controller
             ['url'=>'','titulo'=>'Formulário']
         ];
 
-      return view('site.usuarios.editar', compact('usuario', 'caminhos'));
+      return view('site.usuarios.editar', compact('usuario', 'niveis', 'caminhos'));
     }
 
     /**
@@ -128,6 +134,7 @@ class UsuarioController extends Controller
           'name' => 'required|string|max:255',
           'email' => 'required|string|email|max:255|unique:users',
           'email' => Rule::unique('users')->ignore($id),
+          'nivel_id' => 'required',
           'password' => 'required|string|min:6|confirmed',
         ];
 
@@ -139,11 +146,10 @@ class UsuarioController extends Controller
           ]);           
 
       $usuario = User::find($id);
-
       $usuario->name = $request['name'];
       $usuario->email = $request['email'];
+      $usuario->nivel_id = $request['nivel_id'];
       $usuario->password = Hash::make($request['password']);
-
       $usuario->save();           
 
       return response()->json([

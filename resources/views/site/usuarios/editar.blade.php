@@ -121,6 +121,7 @@
                     _token: $("input[type=hidden][name=_token]").val(),
                     name: $("input[type=text][name=name]").val(), 
                     email: $("input[type=email][name=email]").val(),                    
+                    nivel_id: $("select[name=nivel_id]").val(),                    
                     password: $("input[type=password][name=password]").val(),                                                                                     
                     password_confirmation: $("input[type=password][name=password_confirmation]").val()                  
                 }                

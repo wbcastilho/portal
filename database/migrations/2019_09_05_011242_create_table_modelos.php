@@ -16,11 +16,11 @@ class CreateTableModelos extends Migration
         Schema::create('modelos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome', 255); 
-            $table->string('imagem', 255); 
-            $table->integer('fabricantes_id')->unsigned();
-            $table->foreign('fabricantes_id')->references('id')->on('fabricantes');
-            $table->integer('tipos_id')->unsigned();
-            $table->foreign('tipos_id')->references('id')->on('tipos');
+            $table->string('imagem', 255)->nullable(); 
+            $table->integer('fabricante_id')->unsigned();
+            $table->foreign('fabricante_id')->references('id')->on('fabricantes');
+            $table->integer('tipo_id')->unsigned();
+            $table->foreign('tipo_id')->references('id')->on('tipos');
             $table->softDeletes();
             $table->timestamps();
         });

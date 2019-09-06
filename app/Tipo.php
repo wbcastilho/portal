@@ -17,6 +17,6 @@ class Tipo extends Model
 
     public function modelo()
     {
-      return $this->belongsToMany('App\Modelo');
+      return $this->hasMany('App\Modelo');
     }
 }

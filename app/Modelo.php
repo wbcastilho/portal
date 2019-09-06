@@ -10,18 +10,19 @@ class Modelo extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'nome', 'imagem', 'fabricantes_id', 'tipos_id'
+        'nome', 'imagem', 'fabricante_id', 'tipo_id'
     ];
 
     protected $dates = ['deleted_at'];
 
+
     public function fabricante()
     {
-      return $this->belongsToMany('App\Fabricante');
+      return $this->belongsTo('App\Fabricante');     
     }
 
     public function tipo()
     {
-      return $this->belongsToMany('App\Tipo');
+      return $this->belongsTo('App\Tipo');
     }
 }

@@ -16,7 +16,7 @@ class Fabricante extends Model
     protected $dates = ['deleted_at'];
 
     public function modelo()
-    {
-      return $this->belongsToMany('App\Modelo');
+    {     
+      return $this->hasMany('App\Modelo');
     }
 }

@@ -36,7 +36,7 @@
             <li class="{{ Request::segment(1) == 'setores' || Request::segment(2) == 'setores' ? 'active' : ''}}"><a href="{{route('setores.index')}}"><i class="fa fa-circle-o"></i> Setores</a></li>
             <li class="{{ Request::segment(1) == 'fabricantes' || Request::segment(2) == 'fabricantes' ? 'active' : ''}}"><a href="{{route('fabricantes.index')}}"><i class="fa fa-circle-o"></i> Fabricantes</a></li>
             <li class="{{ Request::segment(1) == 'tipos' || Request::segment(2) == 'tipos' ? 'active' : ''}}"><a href="{{route('tipos.index')}}"><i class="fa fa-circle-o"></i> Tipos</a></li>
-            <li class="{{ Request::segment(1) == 'modelos' || Request::segment(2) == 'modelos' ? 'active' : ''}}"><a href="#"><i class="fa fa-circle-o"></i> Modelos</a></li>           
+            <li class="{{ Request::segment(1) == 'modelos' || Request::segment(2) == 'modelos' ? 'active' : ''}}"><a href="{{route('modelos.index')}}"><i class="fa fa-circle-o"></i> Modelos</a></li>           
             <li class="treeview" style="height: auto;">
               <a href="#"><i class="fa fa-circle-o"></i> Localizações
                 <span class="pull-right-container">

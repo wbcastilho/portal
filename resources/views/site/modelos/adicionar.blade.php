@@ -101,14 +101,48 @@
          $('#btnSalvar').click(function (e) {
             e.preventDefault();
 
-            axios({
+            let nome = document.getElementById("nome").value;           
+            let fabricante_id = document.getElementById("fabricante_id").value;
+            let tipo_id = document.getElementById("tipo_id").value;
+            let imagem = document.getElementById("imagem").files[0];
+            let data = new FormData();
+            let settings = { headers: { 'content-type': 'multipart/form-data' } }
+           
+            data.append('nome', nome);
+            data.append('fabricante_id', fabricante_id);
+            data.append('tipo_id', tipo_id);
+            data.append('imagem', imagem, imagem.name);
+
+            axios.post("{{ route('modelos.store') }}", data, settings)
+            .then(response => {
+                console.log(response)
+                if(response.data.fail){
+                    for(control in response.data.errors){
+                        $('#erro').empty();
+                        $('#' + control).parent().addClass('has-error');
+                        $('#erro').append('<li>' + response.data.errors[control] + '</li>');
+                    }
+                    $('#erros').fadeIn();
+                    $('html, body').animate( { scrollTop: 0 }, 1000);
+                }
+                else {
+                    $('#myModal').modal('show');
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+
+
+            /*axios({
                 method: "post", // verbo http
                 url: "{{ route('modelos.store') }}", // url
+                headers: { 'content-type': 'multipart/form-data' },
                 data: {  
                     _token: $("input[type=hidden][name=_token]").val(),
                     nome: $("input[type=text][name=nome]").val(),
                     fabricante_id: $("select[name=fabricante_id]").val(),      
-                    tipo_id: $("select[name=tipo_id]").val()                         
+                    tipo_id: $("select[name=tipo_id]").val(),                         
+                    imagem: $("input[type=file][name=imagem]").prop('files')[0];                      
                 }                
             })
             .then(response => {
@@ -128,7 +162,8 @@
             })
             .catch(error => {
                 console.log(error)
-            })
+            })*/
+
          });
 
     </script>

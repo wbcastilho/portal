@@ -7,6 +7,8 @@ use App\Modelo;
 use App\Fabricante;
 use App\Tipo;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Storage;
 
 class ModeloController extends Controller
 {
@@ -74,8 +76,30 @@ class ModeloController extends Controller
             'errors' => $validator->errors()
         ], 200);
 
+        $dataForm = $request->all();        
+        
+        if($request->hasFile('imagem') && $request->file('imagem')->isValid()){                      
+            $extension = $request->imagem->extension();
+
+            $name = uniqid(date('His'));
+
+            $nameFile = "{$name}.{$extension}";
+
+            //$upload = Image::make($dataForm['imagem'])->resize(177, 236)->save(storage_path("app/public/modelos/$nameFile", 70));
+            $upload = Image::make($dataForm['imagem'])->fit(400,400)->save(storage_path("app/public/modelos/$nameFile", 70));
+            
+            if(!$upload){
+                return response()->json([
+                    'fail' => true,
+                    'errors' => 'Falha ao fazer upload'
+                ], 500);
+            }else{
+                $dataForm['imagem'] = $nameFile;
+            }
+        }
+
         //Insere no banco de dados
-        $modelo = Modelo::create($request->all());
+        $modelo = Modelo::create($dataForm);
 
         return response()->json([
             'fail' => false,
@@ -102,7 +126,18 @@ class ModeloController extends Controller
      */
     public function edit($id)
     {
-        //
+        $fabricantes = Fabricante::orderBy("nome","ASC")->get();
+        $tipos = Tipo::orderBy("nome","ASC")->get();
+        $modelo = Modelo::find($id);
+
+        //Monta o breadcrumb
+        $caminhos = [
+          ['url'=>'','titulo'=>'Cadastros'],
+          ['url'=>route('modelos.index'),'titulo'=>'Modelos'],
+          ['url'=>'','titulo'=>'Formulário']
+        ];
+    
+        return view('site.modelos.editar', compact('caminhos', 'modelo', 'fabricantes', 'tipos'));       
     }
 
     /**
@@ -114,7 +149,58 @@ class ModeloController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules=[
+            'fabricante_id' => 'required',
+            'tipo_id' => 'required',
+            'nome'=> 'required'
+        ];
+  
+        $validator = Validator::make($request->all(), $rules);
+        if($validator->fails())
+        return response()->json([
+            'fail' => true,
+            'errors' => $validator->errors()
+        ]);
+
+        $dataForm = $request->all();        
+        
+        if($request->hasFile('imagem') && $request->file('imagem')->isValid()){ 
+            $img = Modelo::find($id)->imagem;
+
+            if( $img != null && $img != '')
+            {
+                $upload = Image::make($dataForm['imagem'])->fit(400,400)->save(storage_path("app/public/modelos/$img", 70));                
+                $nameFile = $img;
+            }   
+            else
+            {                  
+                $extension = $request->imagem->extension();
+
+                $name = uniqid(date('His'));
+
+                $nameFile = "{$name}.{$extension}";
+
+                //$upload = Image::make($dataForm['imagem'])->resize(177, 236)->save(storage_path("app/public/modelos/$nameFile", 70));
+                $upload = Image::make($dataForm['imagem'])->fit(400,400)->save(storage_path("app/public/modelos/$nameFile", 70));                               
+            }
+
+            if(!$upload){
+                return response()->json([
+                    'fail' => true,
+                    'errors' => 'Falha ao fazer upload'
+                ], 500);
+            }else{
+                $dataForm['imagem'] = $nameFile;
+            }
+        }
+  
+        //Altera as informações de acordo com o id passado
+        Modelo::find($id)->update($dataForm);
+  
+        return response()->json([
+            'fail' => false,
+            'redirect_url' => url('modelos')
+        ], 200);
     }
 
     /**
@@ -125,6 +211,8 @@ class ModeloController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $modelo = Modelo::find($id);
+
+        $modelo->delete();
     }
 }

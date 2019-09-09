@@ -113,7 +113,42 @@
 
             var id = $('#hidId').val();
 
-            axios({
+            let _method = $("input[type=hidden][name=_method]").val();
+            let nome = document.getElementById("nome").value;           
+            let fabricante_id = document.getElementById("fabricante_id").value;
+            let tipo_id = document.getElementById("tipo_id").value;
+            let imagem = document.getElementById("imagem").files[0];
+            let data = new FormData();
+            let settings = { headers: { 'content-type': 'multipart/form-data' } }
+           
+            data.append('_method', _method);
+            data.append('nome', nome);
+            data.append('fabricante_id', fabricante_id);
+            data.append('tipo_id', tipo_id);
+
+            if(imagem != null)
+                data.append('imagem', imagem, imagem.name);
+
+            axios.post("{{ route('modelos.index') }}" + "/" + id, data, settings)
+            .then(response => {
+                console.log(response)
+                if(response.data.fail){
+                    for(control in response.data.errors){
+                        $('#erro').empty();
+                        $('#' + control).parent().addClass('has-error');
+                        $('#erro').append('<li>' + response.data.errors[control] + '</li>');
+                    }
+                    $('#erros').fadeIn();
+                    $('html, body').animate( { scrollTop: 0 }, 1000);
+                }
+                else {
+                    $('#myModal').modal('show');
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+
+            /*axios({
                 method: "post", // verbo http
                 url: "{{ route('modelos.index') }}" + "/" + id, // url
                 data: { 
@@ -141,7 +176,7 @@
             })
             .catch(error => {
                 console.log(error)
-            })
+            })*/
          });
 
     </script>

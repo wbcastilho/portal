@@ -23,13 +23,13 @@
 <div class="row">
     <div class="form-group col-md-8 col-sm-8 col-xs-12 {{ $errors->has('nome') ? 'has-error' : ''}}">
         <label for="nome">Modelo</label>
-        <input type="text" name="nome" class="form-control" value="{{ isset($modelo->nome) ? $modelo->nome : '' }}{{old('nome')}}">
+        <input type="text" id="nome" name="nome" class="form-control" value="{{ isset($modelo->nome) ? $modelo->nome : '' }}{{old('nome')}}">
     </div>
 </div>
 
-<!--<div class="row">
+<div class="row">
     <div class="form-group col-md-8 col-sm-8 col-xs-12">
         <label for="imagem">Imagem</label>
         <input type="file" name="imagem" id="imagem">       
     </div>
-</div>-->
+</div>

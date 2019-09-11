@@ -97,6 +97,11 @@
             window.location = hid;
         });
 
+        $('#myModal').on('hide.bs.modal', function (e) {
+            var hid = $(".hidModal").val();
+            window.location = hid;
+        });
+
          //Evento ao clicar no botão salvar
          $('#btnSalvar').click(function (e) {
             e.preventDefault();

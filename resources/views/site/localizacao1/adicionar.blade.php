@@ -9,7 +9,7 @@
 @endsection
 
 @section('subtitulo')
-    Usuários <small>(Formulário)</small> 
+    Localização 1 <small>(Formulário)</small> 
 @endsection
 
 @section('voltar')
@@ -48,11 +48,11 @@
         </span>
     </div>
     
-    <form id="meuForm" class="form" role="form" action="{{ route('usuarios.store') }}" enctype="multipart/form-data" method="post">
+    <form id="meuForm" class="form" role="form" action="{{ route('localizacao1.store') }}" enctype="multipart/form-data" method="post">
         {{csrf_field()}} 
 
         <div class="box-body">
-            @include('site.usuarios._form')                   
+            @include('site.localizacao1._form')                   
         </div>                       
 
         <div class="box-footer">
@@ -69,7 +69,7 @@
                     <h4 class="modal-title">Mensagem</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Usuário cadastrado com sucesso!</p>
+                    <p>Localização 1 cadastrada com sucesso!</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="btnModalOk" class="btn btn-primary btnModalConfirm">Ok</button>
@@ -89,10 +89,34 @@
             $('#erros').fadeOut();
         });
 
+        //Ajax para preencher cidades de acordo com o estado selecionado
+		$('select[name=estado_id]').change(function () {
+            var estado_id = $(this).val();
+
+            axios.get('cidades/' + estado_id)
+            .then(function (cidades) {
+                console.log(cidades);
+                $('select[name=cidade_id]').empty();
+                $('select[name=cidade_id]').append('<option value="0"></option>');
+                $.each(cidades.data, function (key, value) {
+                    $('select[name=cidade_id]').append('<option value="' + value.id + '">' + value.nome + '</option>');
+                });
+            })
+            .catch(function (error) {               
+                console.log(error);
+            });            
+            
+        });
+
         //Evento ao clicar no botão Ok do modal
         $('#btnModalOk').click(function (e) {
             e.preventDefault();
 
+            var hid = $(".hidModal").val();
+            window.location = hid;
+        });
+
+        $('#myModal').on('hide.bs.modal', function (e) {
             var hid = $(".hidModal").val();
             window.location = hid;
         });
@@ -103,15 +127,13 @@
 
             axios({
                 method: "post", // verbo http
-                url: "{{ route('usuarios.store') }}", // url
+                url: "{{ route('localizacao1.store') }}", // url
                 data: {  
                     _token: $("input[type=hidden][name=_token]").val(),
-                    name: $("input[type=text][name=name]").val(), 
-                    email: $("input[type=email][name=email]").val(), 
-                    praca_id: $("select[name=praca_id]").val(),                         
-                    nivel_id: $("select[name=nivel_id]").val(),                         
-                    password: $("input[type=password][name=password]").val(),                                                                                     
-                    password_confirmation: $("input[type=password][name=password_confirmation]").val()                                                                                     
+                    nome: $("input[type=text][name=nome]").val(),                                       
+                    estado_id: $("select[name=estado_id]").val(),                    
+                    cidade_id: $("select[name=cidade_id]").val(),                    
+                    praca_id: $("select[name=praca_id]").val()                                                                                          
                 }                
             })
             .then(response => {

@@ -13,7 +13,7 @@ class User extends Authenticatable
     use SoftDeletes; 
 
     protected $fillable = [
-        'name', 'email', 'password', 'nivel_id'
+        'name', 'email', 'password', 'nivel_id', 'praca_id'
     ];
 
     /**
@@ -30,5 +30,10 @@ class User extends Authenticatable
     public function nivel()
     {
       return $this->belongsTo('App\Nivel');
+    }
+
+    public function praca()
+    {
+      return $this->belongsTo('App\Praca');
     }
 }

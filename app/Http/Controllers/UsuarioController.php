@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Nivel;
+use App\Praca;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -21,7 +22,7 @@ class UsuarioController extends Controller
     {
         $searchText=trim($request->get('searchText'));
 
-        $usuarios = User::with('nivel')->where('name', 'LIKE', $searchText . '%')->where('id', '>', 0)->orderBy("name","ASC")->paginate(10);      
+        $usuarios = User::with(['nivel', 'praca'])->where('name', 'LIKE', $searchText . '%')->where('id', '>', 0)->orderBy("name","ASC")->paginate(10);      
 
         //Monta o breadcrumb
         $caminhos = [
@@ -41,6 +42,7 @@ class UsuarioController extends Controller
     public function create()
     {
       $niveis = Nivel::orderBy("id","DESC")->get();
+      $pracas = Praca::orderBy("id","DESC")->get();
 
       //Monta o breadcrumb
       $caminhos = [
@@ -49,7 +51,7 @@ class UsuarioController extends Controller
         ['url'=>'','titulo'=>'Formulário']
       ];
   
-      return view('site.usuarios.adicionar', compact('caminhos', 'niveis'));
+      return view('site.usuarios.adicionar', compact('caminhos', 'niveis', 'pracas'));
     }
 
     /**
@@ -63,6 +65,7 @@ class UsuarioController extends Controller
       $rules=[
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:users',
+        'praca_id' => 'required',
         'nivel_id' => 'required',
         'password' => 'required|string|min:6|confirmed',
       ];
@@ -77,6 +80,7 @@ class UsuarioController extends Controller
         $usuario = User::create([
             'name' => $request['name'],
             'email' => $request['email'],
+            'praca_id' => $request['praca_id'],
             'nivel_id' => $request['nivel_id'],
             'password' => Hash::make($request['password']),
         ]);
@@ -110,6 +114,7 @@ class UsuarioController extends Controller
         $usuario = User::find($id);
 
         $niveis = Nivel::orderBy("id","DESC")->get();
+        $pracas = Praca::orderBy("id","DESC")->get();
 
         //Monta o breadcrumb
          $caminhos = [
@@ -118,7 +123,7 @@ class UsuarioController extends Controller
             ['url'=>'','titulo'=>'Formulário']
         ];
 
-      return view('site.usuarios.editar', compact('usuario', 'niveis', 'caminhos'));
+      return view('site.usuarios.editar', compact('usuario', 'niveis', 'pracas', 'caminhos'));
     }
 
     /**
@@ -134,6 +139,7 @@ class UsuarioController extends Controller
           'name' => 'required|string|max:255',
           'email' => 'required|string|email|max:255|unique:users',
           'email' => Rule::unique('users')->ignore($id),
+          'praca_id' => 'required',
           'nivel_id' => 'required',
           'password' => 'required|string|min:6|confirmed',
         ];
@@ -148,6 +154,7 @@ class UsuarioController extends Controller
       $usuario = User::find($id);
       $usuario->name = $request['name'];
       $usuario->email = $request['email'];
+      $usuario->praca_id = $request['praca_id'];
       $usuario->nivel_id = $request['nivel_id'];
       $usuario->password = Hash::make($request['password']);
       $usuario->save();           

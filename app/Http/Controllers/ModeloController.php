@@ -9,6 +9,7 @@ use App\Tipo;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class ModeloController extends Controller
 {
@@ -23,8 +24,18 @@ class ModeloController extends Controller
 
         //Faz a consulta no banco com paginação
         //$modelos = Modelo::where('nome', 'LIKE', $searchText . '%')->where('id', '>', 0)->orderBy("nome","ASC")->paginate(10);
-        $modelos = Modelo::with(['fabricante', 'tipo'])->where('nome', 'LIKE', $searchText . '%')->where('id', '>', 0)->orderBy("nome","ASC")->paginate(10);      
-       
+        $modelos = Modelo::with(['fabricante', 'tipo'])->where('nome', 'LIKE', $searchText . '%')->where('id', '>', 0)->orderBy("nome","ASC")->paginate(10);             
+
+        /*$modelos = DB::table('modelos')
+            ->join('fabricantes', 'fabricantes.id', '=', 'modelos.fabricante_id')
+            ->join('tipos', 'tipos.id', '=', 'modelos.tipo_id')
+            ->select('modelos.id', 'fabricantes.nome AS fabricante', 'tipos.nome AS tipo', 'modelos.nome AS modelo')
+            ->paginate(10);*/
+
+        /*$modelos = Modelo::with(['fabricante' => function ($query) {
+            $query->where('nome', 'like', '%SONY%');
+        }])->paginate(10);*/
+
         //Monta o breadcrumb
         $caminhos = [
           ['url'=>'','titulo'=>'Cadastros'],

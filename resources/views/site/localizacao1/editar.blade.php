@@ -9,7 +9,7 @@
 @endsection
 
 @section('subtitulo')
-    Usuários <small>(Formulário)</small> 
+    Localização 1 <small>(Formulário)</small> 
 @endsection
 
 @section('voltar')
@@ -48,11 +48,19 @@
         </span>
     </div>
     
-    <form id="meuForm" class="form" role="form" action="{{ route('usuarios.store') }}" enctype="multipart/form-data" method="post">
-        {{csrf_field()}} 
-
+    <form id="meuForm" class="form" role="form" action="{{ route('localizacao1.store') }}" enctype="multipart/form-data" method="post">
+        @csrf
+        @method('PUT')
+        
         <div class="box-body">
-            @include('site.usuarios._form')                   
+            <div class="row">
+                <div class="form-group col-md-2 col-sm-2 col-xs-2">                                                              
+                    <label for="nome">Cód.</label>
+                    <input disabled type="text" id="id" name="id" class="form-control" value="{{ isset($localizacao1->id) ? $localizacao1->id : '' }}{{old('id')}}">                                 
+                </div> 
+            </div>
+
+            @include('site.localizacao1._form')                   
         </div>                       
 
         <div class="box-footer">
@@ -60,16 +68,18 @@
             <a style="margin-left:5px;" href="{{ URL::previous() }}" id="btnCancelar" class="btn btn-default">Voltar</a>
         </div>
     </form>   
+
+    <input type="hidden" name="hidId" id="hidId" value="{{ isset($localizacao1->id) ? $localizacao1->id : '' }}{{old('id')}}" >
     
-      <!-- Janela Modal -->
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <!-- Janela Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Mensagem</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Usuário cadastrado com sucesso!</p>
+                    <p>Informações da localização 1 alteradas com sucesso!</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="btnModalOk" class="btn btn-primary btnModalConfirm">Ok</button>
@@ -97,21 +107,27 @@
             window.location = hid;
         });
 
+        $('#myModal').on('hide.bs.modal', function (e) {
+            var hid = $(".hidModal").val();
+            window.location = hid;
+        });
+
          //Evento ao clicar no botão salvar
          $('#btnSalvar').click(function (e) {
             e.preventDefault();
 
+            var id = $('#hidId').val();
+
             axios({
                 method: "post", // verbo http
-                url: "{{ route('usuarios.store') }}", // url
-                data: {  
+                url: "{{ route('localizacao1.index') }}" + "/" + id, // url
+                data: { 
+                    _method: $("input[type=hidden][name=_method]").val(), 
                     _token: $("input[type=hidden][name=_token]").val(),
-                    name: $("input[type=text][name=name]").val(), 
-                    email: $("input[type=email][name=email]").val(), 
-                    praca_id: $("select[name=praca_id]").val(),                         
-                    nivel_id: $("select[name=nivel_id]").val(),                         
-                    password: $("input[type=password][name=password]").val(),                                                                                     
-                    password_confirmation: $("input[type=password][name=password_confirmation]").val()                                                                                     
+                    nome: $("input[type=text][name=nome]").val(),                                       
+                    estado_id: $("select[name=estado_id]").val(),                    
+                    cidade_id: $("select[name=cidade_id]").val(),                    
+                    praca_id: $("select[name=praca_id]").val()                                     
                 }                
             })
             .then(response => {

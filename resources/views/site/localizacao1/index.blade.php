@@ -9,7 +9,7 @@
 @endsection
 
 @section('subtitulo')
-    Usuários
+    Localização 1
 @endsection
 
 @section('voltar')
@@ -34,8 +34,8 @@
 
 @section('content')        
    
-    <form action="usuarios" method="GET">
-        <a href="{{ route('usuarios.create') }}" type="button" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Adicionar</a>                
+    <form action="localizacao1" method="GET">
+        <a href="{{ route('localizacao1.create') }}" type="button" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Adicionar</a>                
         {{csrf_field()}}
         <div class="input-group col-xs-3 pull-right" >   
             <input type="text" class="form-control" name="searchText" placeholder="Pesquisa" value="{{$searchText}}">
@@ -49,23 +49,23 @@
       <thead>
           <tr>                
               <th style="width: 10px">Cód.</th>
-              <th>Nome</th>         
-              <th style="width: 150px">Praça</th>         
-              <th style="width: 150px">Nível</th>         
+              <th>Estado</th>         
+              <th>Cidade</th>         
+              <th>Localização 1</th>         
               <th style="width: 90px">Ação</th>                                        
           </tr>
       </thead>
       <tbody>
-          @if (count($usuarios) > 0)
-            @foreach ($usuarios as $usuario)               
+          @if (count($localizacoes) > 0)
+            @foreach ($localizacoes as $localizacao)               
                 <tr>                             
-                    <td class="text-center" style="vertical-align:middle;">{{ $usuario->id }}</td>
-                    <td style="vertical-align:middle;">{{ $usuario->name }}</td>
-                    <td style="vertical-align:middle;">{{ $usuario->praca->nome }}</td>
-                    <td style="vertical-align:middle;">{{ $usuario->nivel->nome }}</td>
+                    <td class="text-center" style="vertical-align:middle;">{{ $localizacao->id }}</td>
+                    <td style="vertical-align:middle;">{{ $localizacao->Estado }}</td>
+                    <td style="vertical-align:middle;">{{ $localizacao->Cidade }}</td>
+                    <td style="vertical-align:middle;">{{ $localizacao->Localizacao }}</td>
                     <td>                         
-                    <a href="{{ route('usuarios.edit',$usuario->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
-                    <button title="Deletar" class="btn btn-danger btn-sm btnExcluir"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $usuario->id }}" class="hidDeleteId"></button>                                   
+                    <a href="{{ route('localizacao1.edit',$localizacao->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
+                    <button title="Deletar" class="btn btn-danger btn-sm btnExcluir"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $localizacao->id }}" class="hidDeleteId"></button>                                   
                     </td>
                 </tr>
             @endforeach
@@ -75,11 +75,12 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
           @endif                
       </tbody>
     </table>  
-    {{$usuarios->links()}}  
+    {{$localizacoes->links()}}  
     
     <input type="hidden" name="hidPagina" id="hidPagina" value="{{ URL::full() }}" class="hidPagina">
     
@@ -91,7 +92,7 @@
                     <h4 class="modal-title">Mensagem</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Confirma a exclusão do usuário?</p>
+                    <p>Confirma a exclusão da localização 1?</p>
                 </div>
                 <div class="modal-footer">                       
                     <button title="Deletar" id="btnModalExcluir" class="btn btn-primary"><input type="hidden" name="hidModalId" value="" class="hidModalId">OK</button>                                          
@@ -121,7 +122,7 @@
 
             axios({
                 method: "delete", // verbo http
-                url: "{{ route('usuarios.index') }}" + "/" + id, // url
+                url: "{{ route('localizacao1.index') }}" + "/" + id, // url
                 data: null        
             })
             .then(response => {

@@ -13,6 +13,11 @@ class Cidade extends Model
     //Retorna o estado relacionado com a tabela estados
     public function estado()
     {
-        return $this->belongsTo(Estado::class, 'estado_id');
+        return $this->belongsTo('App\Estado', 'estado_id');
+    }
+
+    public function localizacao1()
+    {
+      return $this->hasMany('App\Localizacao1');
     }
 }

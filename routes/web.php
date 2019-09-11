@@ -39,7 +39,14 @@ Route::group(['middleware' => 'auth','prefix' => '/'], function(){
     Route::resource('setores', 'SetorController');
     Route::resource('tipos', 'TipoController');   
     Route::resource('usuarios', 'UsuarioController');   
-    Route::resource('modelos', 'ModeloController');   
+    Route::resource('modelos', 'ModeloController');  
+    
+    Route::prefix('localizacoes')->group(function () {
+      Route::resource('localizacao1', 'Localizacao1Controller');   
+      Route::get('localizacao1/cidades/{id}', 'EstadoController@getCidades');
+    });
+
+  
 
     Route::get('/home', 'HomeController@index')->name('home');
 });

@@ -132,8 +132,7 @@
                     _token: $("input[type=hidden][name=_token]").val(),
                     nome: $("input[type=text][name=nome]").val(),                                       
                     estado_id: $("select[name=estado_id]").val(),                    
-                    cidade_id: $("select[name=cidade_id]").val(),                    
-                    praca_id: $("select[name=praca_id]").val()                                                                                          
+                    cidade_id: $("select[name=cidade_id]").val()                                                                                                          
                 }                
             })
             .then(response => {

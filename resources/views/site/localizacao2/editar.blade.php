@@ -9,7 +9,7 @@
 @endsection
 
 @section('subtitulo')
-    Localização 1 <small>(Formulário)</small> 
+    Localização 2 <small>(Formulário)</small> 
 @endsection
 
 @section('voltar')
@@ -48,7 +48,7 @@
         </span>
     </div>
     
-    <form id="meuForm" class="form" role="form" action="{{ route('localizacao1.store') }}" enctype="multipart/form-data" method="post">
+    <form id="meuForm" class="form" role="form" action="{{ route('localizacao2.store') }}" enctype="multipart/form-data" method="post">
         @csrf
         @method('PUT')
         
@@ -56,11 +56,11 @@
             <div class="row">
                 <div class="form-group col-md-2 col-sm-2 col-xs-2">                                                              
                     <label for="nome">Cód.</label>
-                    <input disabled type="text" id="id" name="id" class="form-control" value="{{ isset($localizacao1->id) ? $localizacao1->id : '' }}{{old('id')}}">                                 
+                    <input disabled type="text" id="id" name="id" class="form-control" value="{{ isset($localizacao2->id) ? $localizacao2->id : '' }}{{old('id')}}">                                 
                 </div> 
             </div>
 
-            @include('site.localizacao1._form')                   
+            @include('site.localizacao2._form')                   
         </div>                       
 
         <div class="box-footer">
@@ -69,7 +69,7 @@
         </div>
     </form>   
 
-    <input type="hidden" name="hidId" id="hidId" value="{{ isset($localizacao1->id) ? $localizacao1->id : '' }}{{old('id')}}" >
+    <input type="hidden" name="hidId" id="hidId" value="{{ isset($localizacao2->id) ? $localizacao2->id : '' }}{{old('id')}}" >
     
     <!-- Janela Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
@@ -79,7 +79,7 @@
                     <h4 class="modal-title">Mensagem</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Informações da localização 1 alteradas com sucesso!</p>
+                    <p>Informações da localização 2 alteradas com sucesso!</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="btnModalOk" class="btn btn-primary btnModalConfirm">Ok</button>
@@ -120,13 +120,12 @@
 
             axios({
                 method: "post", // verbo http
-                url: "{{ route('localizacao1.index') }}" + "/" + id, // url
+                url: "{{ route('localizacao2.index') }}" + "/" + id, // url
                 data: { 
                     _method: $("input[type=hidden][name=_method]").val(), 
                     _token: $("input[type=hidden][name=_token]").val(),
                     nome: $("input[type=text][name=nome]").val(),                                       
-                    estado_id: $("select[name=estado_id]").val(),                    
-                    cidade_id: $("select[name=cidade_id]").val()                                                       
+                    localizacao1_id: $("select[name=localizacao1_id]").val()                                                        
                 }                
             })
             .then(response => {

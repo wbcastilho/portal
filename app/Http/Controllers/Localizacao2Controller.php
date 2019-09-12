@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Localizacao1;
+use App\Localizacao2;
 use App\Estado;
 use App\Cidade;
 use App\Praca;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
-class Localizacao1Controller extends Controller
+class Localizacao2Controller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,35 +21,35 @@ class Localizacao1Controller extends Controller
     public function index(Request $request)
     {
         $searchText=trim($request->get('searchText'));
-
+       
         //Faz a consulta no banco com paginação
-        $localizacoes = DB::table('localizacoes1')
+        $localizacoes = DB::table('localizacoes2')
+        ->join('localizacoes1', 'localizacoes1.id', '=', 'localizacoes2.localizacao1_id')
         ->join('estados', 'estados.id', '=', 'localizacoes1.estado_id')
         ->join('cidades', 'cidades.id', '=', 'localizacoes1.cidade_id')
-        ->join('pracas', 'pracas.id', '=', 'localizacoes1.praca_id')
-        ->select('localizacoes1.id', 'estados.uf AS Estado', 'cidades.nome AS Cidade', 'pracas.nome AS Praca', 'localizacoes1.nome AS Localizacao')
-        ->where('localizacoes1.id', '>', 0)
-        ->where('localizacoes1.praca_id', '=', auth()->user()->praca->id)        
+        ->join('pracas', 'pracas.id', '=', 'localizacoes2.praca_id')
+        ->select('localizacoes2.id', 'estados.uf AS Estado', 'cidades.nome AS Cidade', 'pracas.nome AS Praca', 'localizacoes1.nome AS Localizacao1', 'localizacoes2.nome AS Localizacao2')
+        ->where('localizacoes2.id', '>', 0)
+        ->where('localizacoes2.praca_id', '=', auth()->user()->praca->id)        
         ->when($searchText, function ($query, $searchText) {
             return $query->where('estados.nome', 'like', $searchText . '%')
             ->orWhere('cidades.nome', 'like', $searchText . '%')
             ->orWhere('pracas.nome', 'like', $searchText . '%')
-            ->orWhere('localizacoes1.nome', 'like', $searchText . '%');
-        })       
+            ->orWhere('localizacoes1.nome', 'like', $searchText . '%')
+            ->orWhere('localizacoes2.nome', 'like', $searchText . '%');
+        })             
         ->orderBy("estados.nome","ASC")
         ->paginate(10);
-
-       
 
         //Monta o breadcrumb
         $caminhos = [
           ['url'=>'','titulo'=>'Cadastros'],
           ['url'=>'','titulo'=>'Localizações'],
-          ['url'=>'','titulo'=>'Localização 1']
+          ['url'=>'','titulo'=>'Localização 2']
         ];
 
         //Chamada da view passando as variaveis $registros
-        return view('site.localizacao1.index', compact('localizacoes', 'caminhos', 'searchText'));
+        return view('site.localizacao2.index', compact('localizacoes', 'caminhos', 'searchText'));
     }
 
     /**
@@ -58,17 +59,16 @@ class Localizacao1Controller extends Controller
      */
     public function create()
     {
-        $estados = Estado::orderBy("nome","ASC")->get();
-        $cidades = Cidade::orderBy("nome","ASC")->get();       
+        $localizacoes1 = Localizacao1::orderBy("nome","ASC")->get();              
 
         //Monta o breadcrumb
         $caminhos = [
           ['url'=>'','titulo'=>'Cadastros'],
-          ['url'=>route('localizacao1.index'),'titulo'=>'Localização 1'],
+          ['url'=>route('localizacao2.index'),'titulo'=>'Localização 2'],
           ['url'=>'','titulo'=>'Formulário']
         ];
     
-        return view('site.localizacao1.adicionar', compact('caminhos', 'estados', 'cidades'));
+        return view('site.localizacao2.adicionar', compact('caminhos', 'localizacoes1'));
     }
 
     /**
@@ -79,10 +79,9 @@ class Localizacao1Controller extends Controller
      */
     public function store(Request $request)
     {
-        $rules=[
-            'nome'=> 'required',
-            'estado_id'=> 'required',
-            'cidade_id'=> 'required'           
+        $rules=[            
+            'localizacao1_id'=> 'required',   
+            'nome'=> 'required'                   
         ];
   
         $validator = Validator::make($request->all(), $rules);
@@ -93,16 +92,15 @@ class Localizacao1Controller extends Controller
         ], 200);
   
         //Insere no banco de dados       
-        $localizacao = Localizacao1::create([
+        $localizacao = Localizacao2::create([
             'nome' => $request['nome'],
-            'estado_id' => $request['estado_id'],
-            'cidade_id' => $request['cidade_id'],
+            'localizacao1_id' => $request['localizacao1_id'],            
             'praca_id' => auth()->user()->praca->id          
         ]);
   
         return response()->json([
             'fail' => false,
-            'redirect_url' => url('localizacao1')
+            'redirect_url' => url('localizacao2')
         ]);
     }
 
@@ -124,19 +122,18 @@ class Localizacao1Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        $estados = Estado::orderBy("nome","ASC")->get();
-        $cidades = Cidade::orderBy("nome","ASC")->get();       
-        $localizacao1 = Localizacao1::find($id);
+    {        
+        $localizacoes1 = Localizacao1::orderBy("nome","ASC")->get();       
+        $localizacao2 = Localizacao2::find($id);
 
         //Monta o breadcrumb
         $caminhos = [
           ['url'=>'','titulo'=>'Cadastros'],
-          ['url'=>route('localizacao1.index'),'titulo'=>'Localização 1'],
+          ['url'=>route('localizacao2.index'),'titulo'=>'Localização 1'],
           ['url'=>'','titulo'=>'Formulário']
         ];
     
-        return view('site.localizacao1.editar', compact('caminhos', 'estados', 'cidades', 'localizacao1'));  
+        return view('site.localizacao2.editar', compact('caminhos', 'localizacoes1', 'localizacao2'));
     }
 
     /**
@@ -148,10 +145,9 @@ class Localizacao1Controller extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rules=[
-            'nome'=> 'required',
-            'estado_id'=> 'required',
-            'cidade_id'=> 'required'            
+        $rules=[            
+            'localizacao1_id'=> 'required',   
+            'nome'=> 'required'                   
         ];
   
         $validator = Validator::make($request->all(), $rules);
@@ -159,20 +155,19 @@ class Localizacao1Controller extends Controller
         return response()->json([
             'fail' => true,
             'errors' => $validator->errors()
-        ]);
-
-        //Altera as informações de acordo com o id passado       
-        $localizacao = Localizacao1::find($id)->update([
+        ], 200);
+  
+        //Insere no banco de dados       
+        $localizacao = Localizacao2::find($id)->update([
             'nome' => $request['nome'],
-            'estado_id' => $request['estado_id'],
-            'cidade_id' => $request['cidade_id'],
+            'localizacao1_id' => $request['localizacao1_id'],            
             'praca_id' => auth()->user()->praca->id          
         ]);
-
+  
         return response()->json([
             'fail' => false,
-            'redirect_url' => url('localizacao1')
-        ], 200);
+            'redirect_url' => url('localizacao2')
+        ]);
     }
 
     /**
@@ -183,7 +178,7 @@ class Localizacao1Controller extends Controller
      */
     public function destroy($id)
     {
-        $localizacao = Localizacao1::find($id);
+        $localizacao = Localizacao2::find($id);
 
         $localizacao->delete();
     }

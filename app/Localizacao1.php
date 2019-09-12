@@ -31,4 +31,9 @@ class Localizacao1 extends Model
     {
       return $this->belongsTo('App\Praca');
     }   
+
+    public function localizacao2()
+    {
+      return $this->hasMany('App\Localizacao2');
+    }
 }

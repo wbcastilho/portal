@@ -44,6 +44,8 @@ Route::group(['middleware' => 'auth','prefix' => '/'], function(){
     Route::prefix('localizacoes')->group(function () {
       Route::resource('localizacao1', 'Localizacao1Controller');   
       Route::get('localizacao1/cidades/{id}', 'EstadoController@getCidades');
+      Route::resource('localizacao2', 'Localizacao2Controller');   
+      Route::get('localizacao2/cidades/{id}', 'EstadoController@getCidades');
     });
 
   

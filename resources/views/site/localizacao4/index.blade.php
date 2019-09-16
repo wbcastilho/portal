@@ -9,7 +9,7 @@
 @endsection
 
 @section('subtitulo')
-    Localização 1
+    Localização 4
 @endsection
 
 @section('voltar')
@@ -34,8 +34,8 @@
 
 @section('content')        
    
-    <form action="localizacao1" method="GET">
-        <a href="{{ route('localizacao1.create') }}" type="button" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Adicionar</a>                
+    <form action="localizacao4" method="GET">
+        <a href="{{ route('localizacao4.create') }}" type="button" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Adicionar</a>                
         {{csrf_field()}}
         <div class="input-group col-xs-3 pull-right" >   
             <input type="text" class="form-control" name="searchText" placeholder="Pesquisa" value="{{$searchText}}">
@@ -52,6 +52,9 @@
               <th>Estado</th>         
               <th>Cidade</th>         
               <th>Localização 1</th>         
+              <th>Localização 2</th>         
+              <th>Localização 3</th>         
+              <th>Localização 4</th>         
               <th style="width: 90px">Ação</th>                                        
           </tr>
       </thead>
@@ -60,17 +63,22 @@
             @foreach ($localizacoes as $localizacao)               
                 <tr>                             
                     <td class="text-center" style="vertical-align:middle;">{{ $localizacao->id }}</td>
-                    <td style="vertical-align:middle;">{{ $localizacao->estado->uf }}</td>
-                    <td style="vertical-align:middle;">{{ $localizacao->cidade->nome }}</td>
+                    <td style="vertical-align:middle;">{{ $localizacao->localizacao3->localizacao2->localizacao1->estado->uf }}</td>
+                    <td style="vertical-align:middle;">{{ $localizacao->localizacao3->localizacao2->localizacao1->cidade->nome }}</td>
+                    <td style="vertical-align:middle;">{{ $localizacao->localizacao3->localizacao2->localizacao1->nome }}</td>
+                    <td style="vertical-align:middle;">{{ $localizacao->localizacao3->localizacao2->nome }}</td>
+                    <td style="vertical-align:middle;">{{ $localizacao->localizacao3->nome }}</td>
                     <td style="vertical-align:middle;">{{ $localizacao->nome }}</td>
                     <td>                         
-                    <a href="{{ route('localizacao1.edit',$localizacao->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
+                    <a href="{{ route('localizacao4.edit',$localizacao->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
                     <button title="Deletar" class="btn btn-danger btn-sm btnExcluir"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $localizacao->id }}" class="hidDeleteId"></button>                                   
                     </td>
                 </tr>
             @endforeach
           @else
             <tr style="height:45px;">
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -92,7 +100,7 @@
                     <h4 class="modal-title">Mensagem</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Confirma a exclusão da localização 1?</p>
+                    <p>Confirma a exclusão da localização 4?</p>
                 </div>
                 <div class="modal-footer">                       
                     <button title="Deletar" id="btnModalExcluir" class="btn btn-primary"><input type="hidden" name="hidModalId" value="" class="hidModalId">OK</button>                                          
@@ -122,7 +130,7 @@
 
             axios({
                 method: "delete", // verbo http
-                url: "{{ route('localizacao1.index') }}" + "/" + id, // url
+                url: "{{ route('localizacao4.index') }}" + "/" + id, // url
                 data: null        
             })
             .then(response => {

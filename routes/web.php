@@ -47,15 +47,18 @@ Route::group(['middleware' => 'auth','prefix' => '/'], function(){
       
       Route::resource('localizacao2', 'Localizacao2Controller');
       Route::get('localizacao2/cidades/{id}', 'EstadoController@getCidades');
-      Route::get('localizacao2/getlocalizacao1/{id}', 'CidadeController@getLocalizacao1');
-      //Route::get('localizacao2/getlocalizacao/{id}', 'Localizacao1Controller@getLocalizacao');
-
+      Route::get('localizacao2/getlocalizacao1/{id}', 'CidadeController@getLocalizacao1');     
      
       Route::resource('localizacao3', 'Localizacao3Controller');
       Route::get('localizacao3/cidades/{id}', 'EstadoController@getCidades');
-      Route::get('localizacao3/getlocalizacao1/{id}', 'CidadeController@getLocalizacao1');
-      //Route::get('localizacao3/getlocalizacao1/{id}', 'Localizacao1Controller@getLocalizacao');
+      Route::get('localizacao3/getlocalizacao1/{id}', 'CidadeController@getLocalizacao1');     
       Route::get('localizacao3/getlocalizacao2/{id}', 'Localizacao1Controller@getLocalizacao2');
+
+      Route::resource('localizacao4', 'Localizacao4Controller');
+      Route::get('localizacao4/cidades/{id}', 'EstadoController@getCidades');
+      Route::get('localizacao4/getlocalizacao1/{id}', 'CidadeController@getLocalizacao1');     
+      Route::get('localizacao4/getlocalizacao2/{id}', 'Localizacao1Controller@getLocalizacao2');
+      Route::get('localizacao4/getlocalizacao3/{id}', 'Localizacao2Controller@getLocalizacao3');
 
     });
 

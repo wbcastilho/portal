@@ -61,7 +61,7 @@
             @foreach ($localizacoes as $localizacao)               
                 <tr>                             
                     <td class="text-center" style="vertical-align:middle;">{{ $localizacao->id }}</td>
-                    <td style="vertical-align:middle;">{{ $localizacao->localizacao1->estado->nome }}</td>
+                    <td style="vertical-align:middle;">{{ $localizacao->localizacao1->estado->uf }}</td>
                     <td style="vertical-align:middle;">{{ $localizacao->localizacao1->cidade->nome }}</td>
                     <td style="vertical-align:middle;">{{ $localizacao->localizacao1->nome }}</td>
                     <td style="vertical-align:middle;">{{ $localizacao->nome }}</td>

@@ -21,24 +21,13 @@ class Localizacao1Controller extends Controller
     {
         $searchText=trim($request->get('searchText'));
 
-        //Faz a consulta no banco com paginação
-        $localizacoes = DB::table('localizacoes1')
-        ->join('estados', 'estados.id', '=', 'localizacoes1.estado_id')
-        ->join('cidades', 'cidades.id', '=', 'localizacoes1.cidade_id')
-        ->join('pracas', 'pracas.id', '=', 'localizacoes1.praca_id')
-        ->select('localizacoes1.id', 'estados.uf AS Estado', 'cidades.nome AS Cidade', 'pracas.nome AS Praca', 'localizacoes1.nome AS Localizacao')
-        ->where('localizacoes1.id', '>', 0)
-        ->where('localizacoes1.praca_id', '=', auth()->user()->praca->id)        
-        ->when($searchText, function ($query, $searchText) {
-            return $query->where('estados.nome', 'like', $searchText . '%')
-            ->orWhere('cidades.nome', 'like', $searchText . '%')
-            ->orWhere('pracas.nome', 'like', $searchText . '%')
-            ->orWhere('localizacoes1.nome', 'like', $searchText . '%');
-        })       
-        ->orderBy("estados.nome","ASC")
-        ->paginate(10);
-
-       
+        $localizacoes = Localizacao1::where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
+        ->orWhereHas('cidade', function ($query) use ($searchText) {
+            $query->where('nome', 'like', '%' . $searchText . '%')
+                ->orWhereHas('estado', function ($query) use ($searchText) {
+                    $query->where('nome', 'like', '%' . $searchText . '%');                       
+                });                               
+        })->paginate(10);
 
         //Monta o breadcrumb
         $caminhos = [
@@ -79,10 +68,10 @@ class Localizacao1Controller extends Controller
      */
     public function store(Request $request)
     {
-        $rules=[
-            'nome'=> 'required',
+        $rules=[           
             'estado_id'=> 'required',
-            'cidade_id'=> 'required'           
+            'cidade_id'=> 'required',
+            'nome'=> 'required'           
         ];
   
         $validator = Validator::make($request->all(), $rules);
@@ -148,10 +137,10 @@ class Localizacao1Controller extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rules=[
-            'nome'=> 'required',
+        $rules=[            
             'estado_id'=> 'required',
-            'cidade_id'=> 'required'            
+            'cidade_id'=> 'required',
+            'nome'=> 'required'            
         ];
   
         $validator = Validator::make($request->all(), $rules);
@@ -186,5 +175,11 @@ class Localizacao1Controller extends Controller
         $localizacao = Localizacao1::find($id);
 
         $localizacao->delete();
+    }
+
+    public function getLocalizacao2($id)
+    {      
+        $localizacoes2 = Localizacao1::find($id)->localizacao2;      
+        return response()->json($localizacoes2);
     }
 }

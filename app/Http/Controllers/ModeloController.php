@@ -22,19 +22,13 @@ class ModeloController extends Controller
     {
         $searchText=trim($request->get('searchText'));
 
-        //Faz a consulta no banco com paginação
-        //$modelos = Modelo::where('nome', 'LIKE', $searchText . '%')->where('id', '>', 0)->orderBy("nome","ASC")->paginate(10);
-        $modelos = Modelo::with(['fabricante', 'tipo'])->where('nome', 'LIKE', $searchText . '%')->where('id', '>', 0)->orderBy("nome","ASC")->paginate(10);             
-
-        /*$modelos = DB::table('modelos')
-            ->join('fabricantes', 'fabricantes.id', '=', 'modelos.fabricante_id')
-            ->join('tipos', 'tipos.id', '=', 'modelos.tipo_id')
-            ->select('modelos.id', 'fabricantes.nome AS fabricante', 'tipos.nome AS tipo', 'modelos.nome AS modelo')
-            ->paginate(10);*/
-
-        /*$modelos = Modelo::with(['fabricante' => function ($query) {
-            $query->where('nome', 'like', '%SONY%');
-        }])->paginate(10);*/
+        $modelos = Modelo::where('nome', 'like', '%' . $searchText . '%')
+        ->orWhereHas('fabricante', function ($query) use ($searchText) {
+            $query->where('nome', 'like', '%' . $searchText . '%');                                           
+        })
+        ->orWhereHas('tipo', function ($query) use ($searchText) {
+            $query->where('nome', 'like', '%' . $searchText . '%');                        
+        })->paginate(10);       
 
         //Monta o breadcrumb
         $caminhos = [

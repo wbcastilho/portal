@@ -9,7 +9,7 @@
 @endsection
 
 @section('subtitulo')
-    Localização 2 <small>(Formulário)</small> 
+    Localização 3 <small>(Formulário)</small> 
 @endsection
 
 @section('voltar')
@@ -48,11 +48,11 @@
         </span>
     </div>
     
-    <form id="meuForm" class="form" role="form" action="{{ route('localizacao2.store') }}" enctype="multipart/form-data" method="post">
+    <form id="meuForm" class="form" role="form" action="{{ route('localizacao3.store') }}" enctype="multipart/form-data" method="post">
         {{csrf_field()}} 
 
         <div class="box-body">
-            @include('site.localizacao2._form')                   
+            @include('site.localizacao3._form')                   
         </div>                       
 
         <div class="box-footer">
@@ -69,7 +69,7 @@
                     <h4 class="modal-title">Mensagem</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Localização 2 cadastrada com sucesso!</p>
+                    <p>Localização 3 cadastrada com sucesso!</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="btnModalOk" class="btn btn-primary btnModalConfirm">Ok</button>
@@ -123,6 +123,24 @@
             })
             .catch(function (error) {               
                 console.log(error);
+            });                        
+        });
+
+         //Ajax para preencher cidades de acordo com o estado selecionado
+		$('select[name=localizacao1_id]').change(function () {           
+            var id = $(this).val();
+
+            axios.get('getlocalizacao2/' + id)
+            .then(function (localizacoes) {
+                console.log(localizacoes);
+                $('select[name=localizacao2_id]').empty();
+                $('select[name=localizacao2_id]').append('<option value="0"></option>');
+                $.each(localizacoes.data, function (key, value) {
+                    $('select[name=localizacao2_id]').append('<option value="' + value.id + '">' + value.nome + '</option>');
+                });
+            })
+            .catch(function (error) {               
+                console.log(error);
             });            
             
         });
@@ -146,13 +164,14 @@
 
             axios({
                 method: "post", // verbo http
-                url: "{{ route('localizacao2.store') }}", // url
+                url: "{{ route('localizacao3.store') }}", // url
                 data: {  
                     _token: $("input[type=hidden][name=_token]").val(),
                     nome: $("input[type=text][name=nome]").val(), 
-                    estado_id: $("select[name=estado_id]").val(),                                                        
+                    estado_id: $("select[name=estado_id]").val(), 
                     cidade_id: $("select[name=cidade_id]").val(),                                                                            
-                    localizacao1_id: $("select[name=localizacao1_id]").val()                                                                                                           
+                    localizacao1_id: $("select[name=localizacao1_id]").val(),                                                                                                           
+                    localizacao2_id: $("select[name=localizacao2_id]").val()                                                                                                           
                 }                
             })
             .then(response => {

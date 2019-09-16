@@ -41,11 +41,22 @@ Route::group(['middleware' => 'auth','prefix' => '/'], function(){
     Route::resource('usuarios', 'UsuarioController');   
     Route::resource('modelos', 'ModeloController');  
     
-    Route::prefix('localizacoes')->group(function () {
+    Route::prefix('localizacoes')->group(function () {    
       Route::resource('localizacao1', 'Localizacao1Controller');   
       Route::get('localizacao1/cidades/{id}', 'EstadoController@getCidades');
-      Route::resource('localizacao2', 'Localizacao2Controller');   
+      
+      Route::resource('localizacao2', 'Localizacao2Controller');
       Route::get('localizacao2/cidades/{id}', 'EstadoController@getCidades');
+      Route::get('localizacao2/getlocalizacao1/{id}', 'CidadeController@getLocalizacao1');
+      //Route::get('localizacao2/getlocalizacao/{id}', 'Localizacao1Controller@getLocalizacao');
+
+     
+      Route::resource('localizacao3', 'Localizacao3Controller');
+      Route::get('localizacao3/cidades/{id}', 'EstadoController@getCidades');
+      Route::get('localizacao3/getlocalizacao1/{id}', 'CidadeController@getLocalizacao1');
+      //Route::get('localizacao3/getlocalizacao1/{id}', 'Localizacao1Controller@getLocalizacao');
+      Route::get('localizacao3/getlocalizacao2/{id}', 'Localizacao1Controller@getLocalizacao2');
+
     });
 
   

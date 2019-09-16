@@ -11,7 +11,7 @@
 
 <div class="row">
     <div class="form-group col-md-6 col-sm-6 col-xs-12 {{ $errors->has('tipo_id') ? 'has-error' : ''}}">
-        <label for="tipo_id">Fabricante</label>        
+        <label for="tipo_id">Tipo</label>        
         <select id="tipo_id" name="tipo_id" class="form-control">           
             @foreach($tipos as $tipo)
             <option {{ (isset($modelo->tipo_id) && $modelo->tipo_id ==  $tipo->id) || old('tipo_id') ==  $tipo->id ? 'selected' : '' }} value="{{$tipo->id}}">{{$tipo->nome}}</option>

@@ -9,7 +9,7 @@
 @endsection
 
 @section('subtitulo')
-    Localização 2 <small>(Formulário)</small> 
+    Localização 3 <small>(Formulário)</small> 
 @endsection
 
 @section('voltar')
@@ -48,11 +48,19 @@
         </span>
     </div>
     
-    <form id="meuForm" class="form" role="form" action="{{ route('localizacao2.store') }}" enctype="multipart/form-data" method="post">
-        {{csrf_field()}} 
-
+    <form id="meuForm" class="form" role="form" action="{{ route('localizacao3.store') }}" enctype="multipart/form-data" method="post">
+        @csrf
+        @method('PUT')
+        
         <div class="box-body">
-            @include('site.localizacao2._form')                   
+            <div class="row">
+                <div class="form-group col-md-2 col-sm-2 col-xs-2">                                                              
+                    <label for="nome">Cód.</label>
+                    <input disabled type="text" id="id" name="id" class="form-control" value="{{ isset($localizacao3->id) ? $localizacao3->id : '' }}{{old('id')}}">                                 
+                </div> 
+            </div>
+
+            @include('site.localizacao3._form')                   
         </div>                       
 
         <div class="box-footer">
@@ -60,16 +68,18 @@
             <a style="margin-left:5px;" href="{{ URL::previous() }}" id="btnCancelar" class="btn btn-default">Voltar</a>
         </div>
     </form>   
+
+    <input type="hidden" name="hidId" id="hidId" value="{{ isset($localizacao3->id) ? $localizacao3->id : '' }}{{old('id')}}" >
     
-      <!-- Janela Modal -->
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <!-- Janela Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Mensagem</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Localização 2 cadastrada com sucesso!</p>
+                    <p>Informações da localização 3 alteradas com sucesso!</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="btnModalOk" class="btn btn-primary btnModalConfirm">Ok</button>
@@ -89,44 +99,6 @@
             $('#erros').fadeOut();
         });
 
-        //Ajax para preencher cidades de acordo com o estado selecionado
-		$('select[name=estado_id]').change(function () {
-            var estado_id = $(this).val();
-
-            axios.get('cidades/' + estado_id)
-            .then(function (cidades) {
-                console.log(cidades);
-                $('select[name=cidade_id]').empty();
-                $('select[name=cidade_id]').append('<option value="0"></option>');
-                $.each(cidades.data, function (key, value) {
-                    $('select[name=cidade_id]').append('<option value="' + value.id + '">' + value.nome + '</option>');
-                });
-            })
-            .catch(function (error) {               
-                console.log(error);
-            });            
-            
-        });
-
-         //Ajax para preencher cidades de acordo com o estado selecionado
-		$('select[name=cidade_id]').change(function () {           
-            var cidade_id = $(this).val();
-
-            axios.get('getlocalizacao1/' + cidade_id)
-            .then(function (localizacoes) {
-                console.log(localizacoes);
-                $('select[name=localizacao1_id]').empty();
-                $('select[name=localizacao1_id]').append('<option value="0"></option>');
-                $.each(localizacoes.data, function (key, value) {
-                    $('select[name=localizacao1_id]').append('<option value="' + value.id + '">' + value.nome + '</option>');
-                });
-            })
-            .catch(function (error) {               
-                console.log(error);
-            });            
-            
-        });
-
         //Evento ao clicar no botão Ok do modal
         $('#btnModalOk').click(function (e) {
             e.preventDefault();
@@ -140,19 +112,42 @@
             window.location = hid;
         });
 
+        //Ajax para preencher cidades de acordo com o estado selecionado
+		$('select[name=localizacao1_id]').change(function () {           
+            var cidade_id = $(this).val();
+
+            axios.get('getlocalizacao/' + cidade_id)
+            .then(function (localizacoes) {
+                console.log(localizacoes);
+                $('select[name=localizacao2_id]').empty();
+                $('select[name=localizacao2_id]').append('<option value="0"></option>');
+                $.each(localizacoes.data, function (key, value) {
+                    $('select[name=localizacao2_id]').append('<option value="' + value.id + '">' + value.nome + '</option>');
+                });
+            })
+            .catch(function (error) {               
+                console.log(error);
+            });            
+            
+        });
+
          //Evento ao clicar no botão salvar
          $('#btnSalvar').click(function (e) {
             e.preventDefault();
 
+            var id = $('#hidId').val();
+
             axios({
                 method: "post", // verbo http
-                url: "{{ route('localizacao2.store') }}", // url
-                data: {  
+                url: "{{ route('localizacao3.index') }}" + "/" + id, // url
+                data: { 
+                    _method: $("input[type=hidden][name=_method]").val(), 
                     _token: $("input[type=hidden][name=_token]").val(),
                     nome: $("input[type=text][name=nome]").val(), 
-                    estado_id: $("select[name=estado_id]").val(),                                                        
+                    estado_id: $("select[name=estado_id]").val(), 
                     cidade_id: $("select[name=cidade_id]").val(),                                                                            
-                    localizacao1_id: $("select[name=localizacao1_id]").val()                                                                                                           
+                    localizacao1_id: $("select[name=localizacao1_id]").val(),                                                                                                           
+                    localizacao2_id: $("select[name=localizacao2_id]").val()                                                    
                 }                
             })
             .then(response => {

@@ -61,10 +61,10 @@
             @foreach ($localizacoes as $localizacao)               
                 <tr>                             
                     <td class="text-center" style="vertical-align:middle;">{{ $localizacao->id }}</td>
-                    <td style="vertical-align:middle;">{{ $localizacao->Estado }}</td>
-                    <td style="vertical-align:middle;">{{ $localizacao->Cidade }}</td>
-                    <td style="vertical-align:middle;">{{ $localizacao->Localizacao1 }}</td>
-                    <td style="vertical-align:middle;">{{ $localizacao->Localizacao2 }}</td>
+                    <td style="vertical-align:middle;">{{ $localizacao->localizacao1->estado->nome }}</td>
+                    <td style="vertical-align:middle;">{{ $localizacao->localizacao1->cidade->nome }}</td>
+                    <td style="vertical-align:middle;">{{ $localizacao->localizacao1->nome }}</td>
+                    <td style="vertical-align:middle;">{{ $localizacao->nome }}</td>
                     <td>                         
                     <a href="{{ route('localizacao2.edit',$localizacao->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
                     <button title="Deletar" class="btn btn-danger btn-sm btnExcluir"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $localizacao->id }}" class="hidDeleteId"></button>                                   

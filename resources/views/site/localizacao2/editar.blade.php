@@ -112,6 +112,44 @@
             window.location = hid;
         });
 
+          //Ajax para preencher cidades de acordo com o estado selecionado
+		$('select[name=estado_id]').change(function () {
+            var estado_id = $(this).val();
+
+            axios.get('cidades/' + estado_id)
+            .then(function (cidades) {
+                console.log(cidades);
+                $('select[name=cidade_id]').empty();
+                $('select[name=cidade_id]').append('<option value="0"></option>');
+                $.each(cidades.data, function (key, value) {
+                    $('select[name=cidade_id]').append('<option value="' + value.id + '">' + value.nome + '</option>');
+                });
+            })
+            .catch(function (error) {               
+                console.log(error);
+            });            
+            
+        });
+
+         //Ajax para preencher cidades de acordo com o estado selecionado
+		$('select[name=cidade_id]').change(function () {           
+            var cidade_id = $(this).val();
+
+            axios.get('getlocalizacao/' + cidade_id)
+            .then(function (localizacoes) {
+                console.log(localizacoes);
+                $('select[name=localizacao1_id]').empty();
+                $('select[name=localizacao1_id]').append('<option value="0"></option>');
+                $.each(localizacoes.data, function (key, value) {
+                    $('select[name=localizacao1_id]').append('<option value="' + value.id + '">' + value.nome + '</option>');
+                });
+            })
+            .catch(function (error) {               
+                console.log(error);
+            });            
+            
+        });
+
          //Evento ao clicar no botão salvar
          $('#btnSalvar').click(function (e) {
             e.preventDefault();
@@ -125,6 +163,8 @@
                     _method: $("input[type=hidden][name=_method]").val(), 
                     _token: $("input[type=hidden][name=_token]").val(),
                     nome: $("input[type=text][name=nome]").val(),                                       
+                    estado_id: $("select[name=estado_id]").val(),                                                        
+                    cidade_id: $("select[name=cidade_id]").val(),                                                        
                     localizacao1_id: $("select[name=localizacao1_id]").val()                                                        
                 }                
             })

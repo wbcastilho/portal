@@ -10,7 +10,7 @@ use App\Estado;
 use App\Cidade;
 use App\Praca;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class Localizacao3Controller extends Controller
 {
@@ -56,9 +56,9 @@ class Localizacao3Controller extends Controller
     public function create()
     {
         $estados = Estado::orderBy("nome","ASC")->get();
-        $cidades = Cidade::orderBy("nome","ASC")->get();
-        $localizacoes1 = Localizacao1::where('praca_id', '=', auth()->user()->praca->id)->orderBy("nome","ASC")->get();
-        $localizacoes2 = Localizacao2::where('praca_id', '=', auth()->user()->praca->id)->orderBy("nome","ASC")->get();              
+        $cidades = Cidade::where('id', '=', 0)->get();
+        $localizacoes1 = Localizacao1::where('id', '=', 0)->get();
+        $localizacoes2 = Localizacao2::where('id', '=', 0)->get();              
 
         //Monta o breadcrumb
         $caminhos = [
@@ -77,16 +77,27 @@ class Localizacao3Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $rules=[            
-            'estado_id'=> 'required',   
-            'cidade_id'=> 'required',   
-            'localizacao1_id'=> 'required',   
-            'localizacao2_id'=> 'required',   
-            'nome'=> 'required'                   
-        ];
-  
-        $validator = Validator::make($request->all(), $rules);
+    {        
+        $validator = Validator::make($request->all(), [
+            'estado_id' => [
+                'required',
+                Rule::notIn('0'),
+            ],
+            'cidade_id'=> [
+                'required',
+                Rule::notIn('0'),
+            ],
+            'localizacao1_id'=> [
+                'required',
+                Rule::notIn('0'),
+            ],
+            'localizacao2_id'=> [
+                'required',
+                Rule::notIn('0'),
+            ],
+            'nome'=> 'required'     
+        ]);
+
         if($validator->fails())
         return response()->json([
             'fail' => true,
@@ -150,15 +161,26 @@ class Localizacao3Controller extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rules=[            
-            'estado_id'=> 'required',   
-            'cidade_id'=> 'required',   
-            'localizacao1_id'=> 'required',   
-            'localizacao2_id'=> 'required',   
-            'nome'=> 'required'                   
-        ];
-  
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), [
+            'estado_id' => [
+                'required',
+                Rule::notIn('0'),
+            ],
+            'cidade_id'=> [
+                'required',
+                Rule::notIn('0'),
+            ],
+            'localizacao1_id'=> [
+                'required',
+                Rule::notIn('0'),
+            ],
+            'localizacao2_id'=> [
+                'required',
+                Rule::notIn('0'),
+            ],
+            'nome'=> 'required'     
+        ]);
+
         if($validator->fails())
         return response()->json([
             'fail' => true,

@@ -8,7 +8,7 @@ use App\Estado;
 use App\Cidade;
 use App\Praca;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class Localizacao1Controller extends Controller
 {
@@ -48,7 +48,7 @@ class Localizacao1Controller extends Controller
     public function create()
     {
         $estados = Estado::orderBy("nome","ASC")->get();
-        $cidades = Cidade::orderBy("nome","ASC")->get();       
+        $cidades = Cidade::where("id", "=", 0)->get();       
 
         //Monta o breadcrumb
         $caminhos = [
@@ -67,14 +67,19 @@ class Localizacao1Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $rules=[           
-            'estado_id'=> 'required',
-            'cidade_id'=> 'required',
-            'nome'=> 'required'           
-        ];
-  
-        $validator = Validator::make($request->all(), $rules);
+    {         
+        $validator = Validator::make($request->all(), [
+            'estado_id' => [
+                'required',
+                Rule::notIn('0'),
+            ],
+            'cidade_id'=> [
+                'required',
+                Rule::notIn('0'),
+            ],
+            'nome'=> 'required'     
+        ]);      
+
         if($validator->fails())
         return response()->json([
             'fail' => true,
@@ -136,14 +141,19 @@ class Localizacao1Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $rules=[            
-            'estado_id'=> 'required',
-            'cidade_id'=> 'required',
-            'nome'=> 'required'            
-        ];
-  
-        $validator = Validator::make($request->all(), $rules);
+    {         
+        $validator = Validator::make($request->all(), [
+            'estado_id' => [
+                'required',
+                Rule::notIn('0'),
+            ],
+            'cidade_id'=> [
+                'required',
+                Rule::notIn('0'),
+            ],
+            'nome'=> 'required'     
+        ]);      
+
         if($validator->fails())
         return response()->json([
             'fail' => true,

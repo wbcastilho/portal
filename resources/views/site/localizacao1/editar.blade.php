@@ -98,6 +98,12 @@
             $(this).parent().removeClass('has-error');
             $('#erros').fadeOut();
         });
+        
+		$('select', '.form').change(function () {
+            $('input').parent().removeClass('has-error');
+            $('select').parent().removeClass('has-error');
+            $('#erros').fadeOut();                        
+        });
 
         //Evento ao clicar no botão Ok do modal
         $('#btnModalOk').click(function (e) {
@@ -132,8 +138,8 @@
             .then(response => {
                 console.log(response)
                 if(response.data.fail){
-                    for(control in response.data.errors){
-                        $('#erro').empty();
+                    $('#erro').empty();
+                    for(control in response.data.errors){                        
                         $('#' + control).parent().addClass('has-error');
                         $('#erro').append('<li>' + response.data.errors[control] + '</li>');
                     }

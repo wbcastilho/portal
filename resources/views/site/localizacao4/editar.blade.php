@@ -95,8 +95,16 @@
     <script>
         /* Evento executado ao se digitar qualquer tecla nos inputs do formulário */
         $('input', '.form').keypress(function (e) {
-            $(this).parent().removeClass('has-error');
+            $('input').parent().removeClass('has-error');
+            $('select').parent().removeClass('has-error');
             $('#erros').fadeOut();
+        });
+
+        //Evento ao selecionar alguma opção no select
+        $('select', '.form').change(function () {
+            $('input').parent().removeClass('has-error');
+            $('select').parent().removeClass('has-error');
+            $('#erros').fadeOut();                        
         });
 
         //Evento ao clicar no botão Ok do modal
@@ -154,8 +162,8 @@
             .then(response => {
                 console.log(response)
                 if(response.data.fail){
-                    for(control in response.data.errors){
-                        $('#erro').empty();
+                    $('#erro').empty();
+                    for(control in response.data.errors){                        
                         $('#' + control).parent().addClass('has-error');
                         $('#erro').append('<li>' + response.data.errors[control] + '</li>');
                     }

@@ -220,4 +220,11 @@ class ModeloController extends Controller
 
         $modelo->delete();
     }
+
+    public function getModelos($fabricante_id, $tipo_id)
+    {      
+        $modelos = Modelo::where('fabricante_id', '=', $fabricante_id)
+            ->where('tipo_id', '=', $tipo_id)->get();      
+        return response()->json($modelos);
+    }
 }

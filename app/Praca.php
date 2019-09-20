@@ -19,4 +19,9 @@ class Praca extends Model
     {
       return $this->hasMany('App\Localizacao1');
     }
+
+    public function equipamento()
+    {     
+      return $this->hasMany('App\Equipamento');
+    }
 }

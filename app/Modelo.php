@@ -25,4 +25,9 @@ class Modelo extends Model
     {
       return $this->belongsTo('App\Tipo');
     }
+
+    public function equipamento()
+    {     
+      return $this->hasMany('App\Equipamento');
+    }
 }

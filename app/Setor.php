@@ -16,4 +16,9 @@ class Setor extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function equipamento()
+    {     
+      return $this->hasMany('App\Equipamento');
+    }
 }

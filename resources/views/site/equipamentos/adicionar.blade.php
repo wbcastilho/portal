@@ -52,7 +52,11 @@
         {{csrf_field()}} 
 
         <div class="box-body">
-            @include('site.equipamentos._form')                   
+            @include('site.equipamentos._form_equipamento') 
+
+            <hr>
+            
+            @include('site.equipamentos._form_localizacao')                   
         </div>                       
 
         <div class="box-footer">
@@ -132,6 +136,99 @@
             getModelos(fabricante_id, tipo_id);
         });
 
+         //Ajax para preencher cidades de acordo com o estado selecionado
+		$('select[name=estado_id]').change(function () {           
+            var estado_id = $(this).val();
+
+            axios.get('cidades/' + estado_id)
+            .then(function (cidades) {
+                console.log(cidades);
+                $('select[name=cidade_id]').empty();
+                $('select[name=cidade_id]').append('<option value="0"></option>');
+                $.each(cidades.data, function (key, value) {
+                    $('select[name=cidade_id]').append('<option value="' + value.id + '">' + value.nome + '</option>');
+                });
+            })
+            .catch(function (error) {               
+                console.log(error);
+            });                        
+        });
+
+         //Ajax para preencher cidades de acordo com o estado selecionado
+		$('select[name=cidade_id]').change(function () {           
+            var cidade_id = $(this).val();
+
+            axios.get('getlocalizacao1/' + cidade_id)
+            .then(function (localizacoes) {
+                console.log(localizacoes);
+                $('select[name=localizacao1_id]').empty();
+                $('select[name=localizacao1_id]').append('<option value="0"></option>');
+                $.each(localizacoes.data, function (key, value) {
+                    $('select[name=localizacao1_id]').append('<option value="' + value.id + '">' + value.nome + '</option>');
+                });
+            })
+            .catch(function (error) {               
+                console.log(error);
+            });                        
+        });
+
+         //Ajax para preencher cidades de acordo com o estado selecionado
+		$('select[name=localizacao1_id]').change(function () {           
+            var id = $(this).val();
+
+            axios.get('getlocalizacao2/' + id)
+            .then(function (localizacoes) {
+                console.log(localizacoes);
+                $('select[name=localizacao2_id]').empty();
+                $('select[name=localizacao2_id]').append('<option value="0"></option>');
+                $.each(localizacoes.data, function (key, value) {
+                    $('select[name=localizacao2_id]').append('<option value="' + value.id + '">' + value.nome + '</option>');
+                });
+            })
+            .catch(function (error) {               
+                console.log(error);
+            });            
+            
+        });
+
+          //Ajax para preencher cidades de acordo com o estado selecionado
+		$('select[name=localizacao2_id]').change(function () {           
+            var id = $(this).val();
+
+            axios.get('getlocalizacao3/' + id)
+            .then(function (localizacoes) {
+                console.log(localizacoes);
+                $('select[name=localizacao3_id]').empty();
+                $('select[name=localizacao3_id]').append('<option value="0"></option>');
+                $.each(localizacoes.data, function (key, value) {
+                    $('select[name=localizacao3_id]').append('<option value="' + value.id + '">' + value.nome + '</option>');
+                });
+            })
+            .catch(function (error) {               
+                console.log(error);
+            });            
+            
+        });
+
+          //Ajax para preencher cidades de acordo com o estado selecionado
+		$('select[name=localizacao3_id]').change(function () {           
+            var id = $(this).val();
+
+            axios.get('getlocalizacao4/' + id)
+            .then(function (localizacoes) {
+                console.log(localizacoes);
+                $('select[name=localizacao4_id]').empty();
+                $('select[name=localizacao4_id]').append('<option value="0"></option>');
+                $.each(localizacoes.data, function (key, value) {
+                    $('select[name=localizacao4_id]').append('<option value="' + value.id + '">' + value.nome + '</option>');
+                });
+            })
+            .catch(function (error) {               
+                console.log(error);
+            });            
+            
+        });
+
         //Evento ao clicar no botão Ok do modal
         $('#btnModalOk').click(function (e) {
             e.preventDefault();
@@ -156,7 +253,15 @@
                     apelido: $("input[type=text][name=apelido]").val(),
                     numeroserie: $("input[type=text][name=numeroserie]").val(),
                     patrimonio: $("input[type=text][name=patrimonio]").val(),
-                    descricao: $("textarea[name=descricao]").val()                    
+                    descricao: $("textarea[name=descricao]").val(),
+
+                    estado_id: $("select[name=estado_id]").val(),                    
+                    cidade_id: $("select[name=cidade_id]").val(),                    
+                    localizacao1_id: $("select[name=localizacao1_id]").val(),                    
+                    localizacao2_id: $("select[name=localizacao2_id]").val(),                    
+                    localizacao3_id: $("select[name=localizacao3_id]").val(),                    
+                    localizacao4_id: $("select[name=localizacao4_id]").val(),
+                    observacao: $("input[type=text][name=observacao]").val()                    
                 }                
             })
             .then(response => {

@@ -63,6 +63,12 @@ Route::group(['middleware' => 'auth','prefix' => '/'], function(){
 
     Route::resource('equipamentos', 'EquipamentoController');
     Route::get('equipamentos/getmodelos/{fabricante_id}/{tipo_id}', 'ModeloController@getModelos');
+    Route::get('equipamentos/{id}/getmodelos/{fabricante_id}/{tipo_id}', 'ModeloController@getModelos');
+    Route::get('equipamentos/cidades/{id}', 'EstadoController@getCidades');
+    Route::get('equipamentos/getlocalizacao1/{id}', 'CidadeController@getLocalizacao1');
+    Route::get('equipamentos/getlocalizacao2/{id}', 'Localizacao1Controller@getLocalizacao2');
+    Route::get('equipamentos/getlocalizacao3/{id}', 'Localizacao2Controller@getLocalizacao3');
+    Route::get('equipamentos/getlocalizacao4/{id}', 'Localizacao3Controller@getLocalizacao4');
   
     Route::get('/home', 'HomeController@index')->name('home');
 });

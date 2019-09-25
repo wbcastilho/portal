@@ -212,4 +212,10 @@ class Localizacao3Controller extends Controller
 
         $localizacao->delete();
     }
+
+    public function getLocalizacao4($id)
+    {      
+        $localizacoes4 = Localizacao3::find($id)->localizacao4;      
+        return response()->json($localizacoes4);
+    }
 }

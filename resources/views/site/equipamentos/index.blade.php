@@ -53,7 +53,8 @@
               <th>Apelido</th>         
               <th>N/S</th>         
               <th>Patrimônio</th>         
-              <th style="width: 90px">Ação</th>                                        
+              <th>Localização</th>         
+              <th style="width: 50px">Ação</th>                                        
           </tr>
       </thead>
       <tbody>
@@ -65,9 +66,9 @@
                     <td style="vertical-align:middle;">{{ $equipamento->apelido }}</td>
                     <td style="vertical-align:middle;">{{ $equipamento->numeroserie }}</td>
                     <td style="vertical-align:middle;">{{ $equipamento->patrimonio }}</td>
+                    <td style="vertical-align:middle;">{{ $equipamento->localizacao_equipamentos }}</td>
                     <td>                         
-                        <a href="{{ route('equipamentos.edit',$equipamento->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
-                        <button title="Deletar" class="btn btn-danger btn-sm btnExcluir"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $equipamento->id }}" class="hidDeleteId"></button>                                   
+                        <a href="{{ route('equipamentos.show',$equipamento->id) }}" title="Exibir" type="button" class="btn btn-info btn-sm"><i class="fa fa-search-plus"></i></a>                       
                     </td>
                 </tr>
             @endforeach

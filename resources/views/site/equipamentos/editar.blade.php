@@ -60,7 +60,7 @@ Equipamentos <small>(Formulário)</small>
                 </div> 
             </div>
 
-            @include('site.equipamentos._form')                   
+            @include('site.equipamentos._form_equipamento')                   
         </div>                       
 
         <div class="box-footer">
@@ -93,10 +93,53 @@ Equipamentos <small>(Formulário)</small>
 @section('js')
     
     <script>
-        /* Evento executado ao se digitar qualquer tecla nos inputs do formulário */
+        //Função que preenche o select modelos
+        function getModelos(fabricante_id, tipo_id) {
+            if(fabricante_id != 0 && tipo_id != 0)
+            {
+                axios.get('getmodelos/' + fabricante_id + '/' + tipo_id)
+                .then(function (modelos) {
+                    console.log(modelos);
+                    $('select[name=modelo_id]').empty();
+                    $('select[name=modelo_id]').append('<option value="0"></option>');
+                    $.each(modelos.data, function (key, value) {
+                        $('select[name=modelo_id]').append('<option value="' + value.id + '">' + value.nome + '</option>');
+                    });
+                })
+                .catch(function (error) {               
+                    console.log(error);
+                });            
+            }
+        }
+
+        //Evento executado ao se digitar qualquer tecla nos inputs do formulário 
         $('input', '.form').keypress(function (e) {
-            $(this).parent().removeClass('has-error');
+            $('input').parent().removeClass('has-error');
+            $('select').parent().removeClass('has-error');
             $('#erros').fadeOut();
+        });
+
+        //Evento ao selecionar alguma opção no select
+        $('select', '.form').change(function () {
+            $('input').parent().removeClass('has-error');
+            $('select').parent().removeClass('has-error');
+            $('#erros').fadeOut();                        
+        });
+
+        //Ajax para preencher o select modelos
+		$('select[name=fabricante_id]').change(function () {           
+            var fabricante_id = $(this).val();
+            var tipo_id = $('select[name=tipo_id]').val();
+
+            getModelos(fabricante_id, tipo_id);
+        });
+
+        //Ajax para preencher o select modelos
+		$('select[name=tipo_id]').change(function () {           
+            var fabricante_id = $('select[name=fabricante_id]').val();
+            var tipo_id = $(this).val();
+           
+            getModelos(fabricante_id, tipo_id);
         });
 
         //Evento ao clicar no botão Ok do modal
@@ -119,10 +162,14 @@ Equipamentos <small>(Formulário)</small>
                 data: { 
                     _method: $("input[type=hidden][name=_method]").val(), 
                     _token: $("input[type=hidden][name=_token]").val(),
-                    nome: $("input[type=text][name=nome]").val(),
-                    site: $("input[type=text][name=site]").val(),
-                    telefone: $("input[type=text][name=telefone]").val(),
-                    email: $("input[type=text][name=email]").val()
+                    fabricante_id: $("select[name=fabricante_id]").val(),  
+                    tipo_id: $("select[name=tipo_id]").val(),  
+                    modelo_id: $("select[name=modelo_id]").val(),                     
+                    setor_id: $("select[name=setor_id]").val(),                     
+                    apelido: $("input[type=text][name=apelido]").val(),
+                    numeroserie: $("input[type=text][name=numeroserie]").val(),
+                    patrimonio: $("input[type=text][name=patrimonio]").val(),
+                    descricao: $("textarea[name=descricao]").val()
                 }                
             })
             .then(response => {

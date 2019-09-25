@@ -36,4 +36,9 @@ class User extends Authenticatable
     {
       return $this->belongsTo('App\Praca');
     }
+
+    public function localizacao_equipamentos()
+    {
+      return $this->hasMany('App\LocalizacaoEquipamentos');
+    }
 }

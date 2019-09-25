@@ -11,4 +11,9 @@ class Situacao extends Model
     protected $fillable = [
         'nome', 'site', 'telefone'
     ];
+
+    public function localizacao_equipamentos()
+    {
+      return $this->hasMany('App\LocalizacaoEquipamentos');
+    }
 }

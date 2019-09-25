@@ -36,4 +36,9 @@ class Localizacao1 extends Model
     {
       return $this->hasMany('App\Localizacao2');
     }
+
+    public function localizacao_equipamentos()
+    {
+      return $this->hasMany('App\LocalizacaoEquipamentos');
+    }
 }

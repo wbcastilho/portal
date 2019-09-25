@@ -19,4 +19,9 @@ class Localizacao4 extends Model
     {
       return $this->belongsTo('App\Localizacao3');
     }
+
+    public function localizacao_equipamentos()
+    {
+      return $this->hasMany('App\LocalizacaoEquipamentos');
+    }
 }

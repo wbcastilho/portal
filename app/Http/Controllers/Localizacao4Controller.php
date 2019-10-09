@@ -225,8 +225,17 @@ class Localizacao4Controller extends Controller
      */
     public function destroy($id)
     {
-        $localizacao = Localizacao4::find($id);
+        if(Localizacao4::has('localizacao_equipamentos')->find($id) == null)
+        {
+            $localizacao = Localizacao4::find($id);
 
-        $localizacao->delete();
+            $localizacao->delete();
+        }
+        else
+        {
+            return response()->json([
+                'fail' => true                
+            ]);
+        }              
     }
 }

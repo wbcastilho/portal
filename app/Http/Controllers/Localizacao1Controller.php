@@ -185,12 +185,18 @@ class Localizacao1Controller extends Controller
      */
     public function destroy($id)
     {
-       
+        if(Localizacao1::has('localizacao_equipamentos')->find($id) == null)
+        {
             $localizacao = Localizacao1::find($id);
 
             $localizacao->delete();
-       
-      
+        }
+        else
+        {
+            return response()->json([
+                'fail' => true                
+            ]);
+        }                        
     }
 
     public function getLocalizacao2($id)

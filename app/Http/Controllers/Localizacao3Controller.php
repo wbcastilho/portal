@@ -211,9 +211,18 @@ class Localizacao3Controller extends Controller
      */
     public function destroy($id)
     {
-        $localizacao = Localizacao3::find($id);
+        if(Localizacao3::has('localizacao_equipamentos')->find($id) == null)
+        {
+            $localizacao = Localizacao3::find($id);
 
-        $localizacao->delete();
+            $localizacao->delete();
+        }
+        else
+        {
+            return response()->json([
+                'fail' => true                
+            ]);
+        }            
     }
 
     public function getLocalizacao4($id)

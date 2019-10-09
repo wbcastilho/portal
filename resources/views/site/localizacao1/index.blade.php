@@ -101,6 +101,23 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+     <!-- Janela Modal -->
+     <div class="modal fade" id="myModal2" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Mensagem</h4>
+                </div>
+                <div class="modal-body">
+                    <p>O registro não pose ser excluído por estar relacionado a outra tabela.</p>
+                </div>
+                <div class="modal-footer">                                                                                    
+                    <button type="button" id="btnModal2Cancel" class="btn btn-default">Ok</button>                    
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 
 @section('js')
@@ -117,6 +134,10 @@
             $('#myModal').modal('hide');              
         });
 
+        $('#btnModal2Cancel').click(function (e) {
+            $('#myModal2').modal('hide');              
+        });
+
         $('#btnModalExcluir').click(function (e) {
             var id = $('.hidModalId').val();
 
@@ -126,8 +147,15 @@
                 data: null        
             })
             .then(response => {
-                var current = $(".hidPagina").val();
-                window.location = current;  
+                if(response.data.fail){
+                    $('#myModal').modal('hide');
+                    $('#myModal2').modal('show'); 
+                }
+                else
+                {
+                    var current = $(".hidPagina").val();
+                    window.location = current; 
+                }    
             })
             .catch(error => {
                 alert(data);

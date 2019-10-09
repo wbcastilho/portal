@@ -154,8 +154,16 @@ class SetorController extends Controller
      */
     public function destroy($id)
     {
+      if(Setor::has('equipamento')->find($id) == null)
+      {
         $setor = Setor::find($id);
-
         $setor->delete();
+      }
+      else
+      {
+          return response()->json([
+              'fail' => true                
+          ]);
+      }            
     }
 }

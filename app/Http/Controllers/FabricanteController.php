@@ -154,8 +154,16 @@ class FabricanteController extends Controller
      */
     public function destroy($id)
     {
-      $fabricante = Fabricante::find($id);
-
-      $fabricante->delete();
+      if(Fabricante::has('modelo')->find($id) == null)
+      {
+        $fabricante = Fabricante::find($id);
+        $fabricante->delete();
+      }
+      else
+      {
+          return response()->json([
+              'fail' => true                
+          ]);
+      }      
     }
 }

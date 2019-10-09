@@ -154,8 +154,17 @@ class TipoController extends Controller
      */
     public function destroy($id)
     {
+      if(Tipo::has('modelo')->find($id) == null)
+      {
         $tipo = Tipo::find($id);
-
         $tipo->delete();
+      }
+      else
+      {
+          return response()->json([
+              'fail' => true                
+          ]);
+      }   
+        
     }
 }

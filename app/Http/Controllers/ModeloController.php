@@ -216,9 +216,17 @@ class ModeloController extends Controller
      */
     public function destroy($id)
     {
-        $modelo = Modelo::find($id);
-
-        $modelo->delete();
+        if(Modelo::has('equipamento')->find($id) == null)
+        {
+            $modelo = Modelo::find($id);
+            $modelo->delete();
+        }
+        else
+        {
+            return response()->json([
+                'fail' => true                
+            ]);
+        }            
     }
 
     public function getModelos1($fabricante_id, $tipo_id)

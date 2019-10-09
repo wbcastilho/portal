@@ -55,8 +55,8 @@
 </div>
 
 <div class="row">
-    <div class="form-group col-md-8 col-sm-8 col-xs-12">
+    <div class="form-group col-md-8 col-sm-8 col-xs-12 {{ $errors->has('observacao') ? 'has-error' : ''}}">
         <label>Observação</label>
-        <textarea name="observacao" class="form-control" rows="3">{{ isset($equipamento->observacao) ? $equipamento->observacao : '' }}{{old('observacao')}}</textarea>
+        <textarea name="observacao" class="form-control" rows="3">{{old('observacao')}}</textarea>
     </div>
 </div>

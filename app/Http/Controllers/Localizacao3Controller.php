@@ -23,18 +23,21 @@ class Localizacao3Controller extends Controller
     {
         $searchText=trim($request->get('searchText'));
        
-        $localizacoes = Localizacao3::where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
-        ->orWhereHas('localizacao2', function ($query) use ($searchText) {
-            $query->where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
-                ->orWhereHas('localizacao1', function ($query) use ($searchText) {
-                    $query->where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
-                        ->orWhereHas('cidade', function ($query) use ($searchText) {
-                            $query->where('nome', 'like', '%' . $searchText . '%')
-                                ->orWhereHas('estado', function ($query) use ($searchText) {
-                                    $query->where('nome', 'like', '%' . $searchText . '%');
-                                });
+        $localizacoes = Localizacao3::where('praca_id', '=', auth()->user()->praca->id)
+        ->where(function ($query) use ($searchText){
+            $query->where('nome', 'like', '%' . $searchText . '%');
+            $query->orWhereHas('localizacao2', function ($query1) use ($searchText) {
+                $query1->where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
+                ->orWhereHas('localizacao1', function ($query2) use ($searchText) {
+                    $query2->where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
+                    ->orWhereHas('cidade', function ($query3) use ($searchText) {
+                        $query3->where('nome', 'like', '%' . $searchText . '%')
+                        ->orWhereHas('estado', function ($query4) use ($searchText) {
+                                $query4->where('nome', 'like', '%' . $searchText . '%');
                         });
-                });                               
+                    });
+                });                                              
+            });
         })->paginate(10);
 
         //Monta o breadcrumb
@@ -215,7 +218,13 @@ class Localizacao3Controller extends Controller
 
     public function getLocalizacao4($id)
     {      
-        $localizacoes4 = Localizacao3::find($id)->localizacao4;      
+        $localizacoes4 = Localizacao3::find($id)->localizacao4->where('praca_id', '=', auth()->user()->praca->id);      
+        return response()->json($localizacoes4);
+    }
+
+    public function getLocalizacao4_2($equipamento_id, $id)
+    {      
+        $localizacoes4 = Localizacao3::find($id)->localizacao4->where('praca_id', '=', auth()->user()->praca->id);      
         return response()->json($localizacoes4);
     }
 }

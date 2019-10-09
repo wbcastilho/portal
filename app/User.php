@@ -27,6 +27,11 @@ class User extends Authenticatable
 
     protected $dates = ['deleted_at'];
 
+    public function getFormattedDataAttribute()
+    {
+        return \Carbon\Carbon::parse($this->created_at)->format('d/m/Y');
+    }
+
     public function nivel()
     {
       return $this->belongsTo('App\Nivel');

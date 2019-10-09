@@ -21,8 +21,14 @@ class Cidade extends Model
       return $this->hasMany('App\Localizacao1');
     }
 
+    public function equipamentos()
+    {
+         return $this->belongsToMany('App\Equipamento', 'localizacao_equipamentos', 'cidade_id', 'equipamento_id');
+    }
+
     public function localizacao_equipamentos()
     {
       return $this->hasMany('App\LocalizacaoEquipamentos');
     }
+
 }

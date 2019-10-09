@@ -14,10 +14,10 @@
 
 <div class="row">
     <div class="form-group col-md-4 col-sm-4 col-xs-12 {{ $errors->has('praca_id') ? 'has-error' : ''}}">
-        <label for="praca_id">Praça</label>        
+        <label for="praca_id">Praça</label>            
         <select id="praca_id" name="praca_id" class="form-control">
             @foreach($pracas as $praca)
-            <option {{ (isset($usuario->praca_id) && $usuario->praca_id ==  $praca->id) || old('praca_id') ==  $praca->id ? 'selected' : '' }} value="{{$praca->id}}">{{$praca->nome}}</option>
+            <option {{ (isset($usuario->praca_id) && $usuario->praca_id ==  $praca->id) || old('praca_id') ===  $praca->id ? 'selected' : '' }} value="{{$praca->id}}">{{$praca->nome}}</option>
             @endforeach
         </select>       
     </div>

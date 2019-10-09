@@ -21,14 +21,17 @@ class Localizacao1Controller extends Controller
     {
         $searchText=trim($request->get('searchText'));
 
-        $localizacoes = Localizacao1::where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
-        ->orWhereHas('cidade', function ($query) use ($searchText) {
-            $query->where('nome', 'like', '%' . $searchText . '%')
+        $localizacoes = Localizacao1::where('praca_id', '=', auth()->user()->praca->id)
+        ->where(function ($query) use ($searchText)  { 
+            $query->orWhere('nome', 'LIKE', '%' . $searchText . '%');
+            $query->orWhereHas('cidade', function ($query1) use ($searchText) {
+                $query1->where('nome', 'LIKE', '%' . $searchText . '%')
                 ->orWhereHas('estado', function ($query) use ($searchText) {
-                    $query->where('nome', 'like', '%' . $searchText . '%');                       
-                });                               
-        })->paginate(10);
-
+                    $query->where('uf', 'like', '%' . $searchText . '%');                       
+                });
+            });
+        })->paginate(10);       
+       
         //Monta o breadcrumb
         $caminhos = [
           ['url'=>'','titulo'=>'Cadastros'],
@@ -182,14 +185,23 @@ class Localizacao1Controller extends Controller
      */
     public function destroy($id)
     {
-        $localizacao = Localizacao1::find($id);
+       
+            $localizacao = Localizacao1::find($id);
 
-        $localizacao->delete();
+            $localizacao->delete();
+       
+      
     }
 
     public function getLocalizacao2($id)
     {      
-        $localizacoes2 = Localizacao1::find($id)->localizacao2;      
+        $localizacoes2 = Localizacao1::find($id)->localizacao2->where('praca_id', '=', auth()->user()->praca->id);      
+        return response()->json($localizacoes2);
+    }
+
+    public function getLocalizacao2_2($equipamento_id, $id)
+    {      
+        $localizacoes2 = Localizacao1::find($id)->localizacao2->where('praca_id', '=', auth()->user()->praca->id);      
         return response()->json($localizacoes2);
     }
 }

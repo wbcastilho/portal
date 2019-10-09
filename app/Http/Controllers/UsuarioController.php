@@ -112,7 +112,6 @@ class UsuarioController extends Controller
     {
        //Faz a consulta pesquisando pelo id
         $usuario = User::find($id);
-
         $niveis = Nivel::orderBy("id","DESC")->get();
         $pracas = Praca::orderBy("id","DESC")->get();
 

@@ -22,15 +22,18 @@ class Localizacao2Controller extends Controller
     {
         $searchText=trim($request->get('searchText'));
        
-        $localizacoes = Localizacao2::where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
-        ->orWhereHas('localizacao1', function ($query) use ($searchText) {
-            $query->where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
-                ->orWhereHas('cidade', function ($query) use ($searchText) {
-                    $query->where('nome', 'like', '%' . $searchText . '%')
-                        ->orWhereHas('estado', function ($query) use ($searchText) {
-                            $query->where('nome', 'like', '%' . $searchText . '%');                               
-                        });
+        $localizacoes = Localizacao2::where('praca_id', '=', auth()->user()->praca->id)
+        ->where(function ($query) use ($searchText)  { 
+            $query->orWhere('nome', 'LIKE', '%' . $searchText . '%');
+            $query->orWhereHas('localizacao1', function ($query1) use ($searchText) {
+                $query1->where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
+                ->orWhereHas('cidade', function ($query2) use ($searchText) {
+                    $query2->where('nome', 'like', '%' . $searchText . '%')
+                    ->orWhereHas('estado', function ($query3) use ($searchText) {
+                        $query3->where('uf', 'like', '%' . $searchText . '%');                               
+                    });
                 });                               
+            });
         })->paginate(10);
        
         //Monta o breadcrumb
@@ -194,22 +197,29 @@ class Localizacao2Controller extends Controller
      */
     public function destroy($id)
     {
-        $localizacao = Localizacao2::find($id);
+        if(Localizacao2::has('localizacao_equipamentos')->find($id) == null)
+        {
+            $localizacao = Localizacao2::find($id);
 
-        $localizacao->delete();
+            $localizacao->delete();
+        }
+        else
+        {
+            return response()->json([
+                'fail' => true                
+            ]);
+        }
     }
 
     public function getLocalizacao3($id)
     {      
-        $localizacoes3 = Localizacao2::find($id)->localizacao3;      
+        $localizacoes3 = Localizacao2::find($id)->localizacao3->where('praca_id', '=', auth()->user()->praca->id);      
         return response()->json($localizacoes3);
-    }
+    }   
 
-    /*public function getLocalizacao($id)
+    public function getLocalizacao3_2($equipamento_id, $id)
     {      
-        $localizacoes2 = Localizacao2::where('localizacao1_id', '=', $id)
-            ->where('praca_id', '=', auth()->user()->praca->id)
-            ->get();      
-        return response()->json($localizacoes2); 
-    }*/
+        $localizacoes3 = Localizacao2::find($id)->localizacao3->where('praca_id', '=', auth()->user()->praca->id);      
+        return response()->json($localizacoes3);
+    }   
 }

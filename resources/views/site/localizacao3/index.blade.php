@@ -132,8 +132,10 @@
                 data: null        
             })
             .then(response => {
-                var current = $(".hidPagina").val();
-                window.location = current;  
+              
+                    var current = $(".hidPagina").val();
+                    window.location = current; 
+               
             })
             .catch(error => {
                 alert(data);

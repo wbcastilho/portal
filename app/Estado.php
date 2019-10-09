@@ -24,4 +24,9 @@ class Estado extends Model
     {
       return $this->hasMany('App\LocalizacaoEquipamentos');
     }
+
+    public function equipamentos()
+    {
+         return $this->belongsToMany('App\Equipamento', 'localizacao_equipamentos', 'estado_id', 'equipamento_id');
+    }
 }

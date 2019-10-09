@@ -75,59 +75,34 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">             
-              <span class="hidden-xs">{{ auth()->user()->name }}</span>
-            </a>            
-          </li>                 
-        </ul>
-      </div>
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">          
-          
-          <!-- User Account: style can be found in dropdown.less -->
-          <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">             
-              <span class="hidden-xs">Alexander Pierce</span>
-            </a>
+              <span class="hidden-xs">{{ studly_case(auth()->user()->name) }}</span>
+            </a> 
             <ul class="dropdown-menu">
               <!-- User image -->
-              <li class="user-header">
-                
+              <li class="user-header">                
                 <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  {{ studly_case(auth()->user()->name) }} - {{ studly_case(auth()->user()->nivel->nome) }}
+                  <small>{{ auth()->user()->praca->nome }}</small>
+                  <small>Membro desde {{ auth()->user()->getFormattedDataAttribute() }}</small>
                 </p>
-              </li>
-              <!-- Menu Body -->
-              <li class="user-body">
-                <div class="row">
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
-                  </div>
-                </div>
-                <!-- /.row -->
-              </li>
+              
+              </li>             
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="#" class="btn btn-default btn-flat">Perfil</a>
                 </div>
                 <div class="pull-right">
-                  <a href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn btn-default btn-flat">Sair</a>
                   
                   <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
                     {{ csrf_field() }}
                    </form>
                 </div>
               </li>
-            </ul>
-          </li>         
+            </ul>           
+          </li>                 
         </ul>
-      </div>
+      </div>     
     </nav>
   </header>

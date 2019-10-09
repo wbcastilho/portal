@@ -9,11 +9,11 @@ class Situacao extends Model
     protected $table = 'situacoes';
 
     protected $fillable = [
-        'nome', 'site', 'telefone'
+        'nome'
     ];
 
     public function localizacao_equipamentos()
-    {
-      return $this->hasMany('App\LocalizacaoEquipamentos');
+    {      
+      return $this->hasMany('App\LocalizacaoEquipamentos'); 
     }
 }

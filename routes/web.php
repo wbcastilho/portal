@@ -61,14 +61,25 @@ Route::group(['middleware' => 'auth','prefix' => '/'], function(){
       Route::get('localizacao4/getlocalizacao3/{id}', 'Localizacao2Controller@getLocalizacao3');     
     });
 
-    Route::resource('equipamentos', 'EquipamentoController');
-    Route::get('equipamentos/getmodelos/{fabricante_id}/{tipo_id}', 'ModeloController@getModelos');
-    Route::get('equipamentos/{id}/getmodelos/{fabricante_id}/{tipo_id}', 'ModeloController@getModelos');
+    //Route::post('equipamentos/movimentacao/{id}', 'EquipamentoController@movimentacao')->name('equipamentos.movimentacao');
+    Route::get('equipamentos/{id}/movimentar', 'EquipamentoController@movimentar')->name('equipamentos.movimentar');
+    Route::post('equipamentos/{id}/movimentar/movimentacao', 'EquipamentoController@movimentacao')->name('equipamentos.movimentacao');
+    
+    Route::resource('equipamentos', 'EquipamentoController');   
+    Route::post('equipamentos/{id}/excluir', 'EquipamentoController@excluir');
+    Route::get('equipamentos/getmodelos/{fabricante_id}/{tipo_id}', 'ModeloController@getModelos1');
+    Route::get('equipamentos/{id}/getmodelos/{fabricante_id}/{tipo_id}', 'ModeloController@getModelos2');
     Route::get('equipamentos/cidades/{id}', 'EstadoController@getCidades');
     Route::get('equipamentos/getlocalizacao1/{id}', 'CidadeController@getLocalizacao1');
     Route::get('equipamentos/getlocalizacao2/{id}', 'Localizacao1Controller@getLocalizacao2');
     Route::get('equipamentos/getlocalizacao3/{id}', 'Localizacao2Controller@getLocalizacao3');
     Route::get('equipamentos/getlocalizacao4/{id}', 'Localizacao3Controller@getLocalizacao4');
+
+    Route::get('equipamentos/{equipamento_id}/cidades/{id}', 'EstadoController@getCidades2');
+    Route::get('equipamentos/{equipamento_id}/getlocalizacao1/{id}', 'CidadeController@getLocalizacao1_2');
+    Route::get('equipamentos/{equipamento_id}/getlocalizacao2/{id}', 'Localizacao1Controller@getLocalizacao2_2');
+    Route::get('equipamentos/{equipamento_id}/getlocalizacao3/{id}', 'Localizacao2Controller@getLocalizacao3_2');
+    Route::get('equipamentos/{equipamento_id}/getlocalizacao4/{id}', 'Localizacao3Controller@getLocalizacao4_2');
   
     Route::get('/home', 'HomeController@index')->name('home');
 });

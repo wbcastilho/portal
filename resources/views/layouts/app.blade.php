@@ -7,7 +7,8 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Laravel</title>
-        <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">       
+        <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">  
+        @yield('css')     
     </head>
     <body class="hold-transition skin-blue sidebar-mini">       
         <div class="wrapper">

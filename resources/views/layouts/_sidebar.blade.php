@@ -52,12 +52,24 @@
             </li>
           </ul>
         </li>
+        <li>
+          <a href="#">
+            <i class="fa fa-phone"></i>
+            <span>Contatos</span>            
+          </a>         
+        </li> 
         <li class="{{ Request::segment(1) == 'equipamentos' || Request::segment(2) == 'equipamentos' ? 'active' : '' }}">
           <a href="{{route('equipamentos.index')}}">
-            <i class="fa fa-files-o"></i>
+            <i class="fa fa-laptop"></i>
             <span>Equipamentos</span>            
           </a>         
-        </li>                                           
+        </li>  
+        <li>
+          <a href="#">
+            <i class="fa fa-file-text-o"></i>
+            <span>Relatórios</span>            
+          </a>         
+        </li>                                              
       </ul>
     </section>
     <!-- /.sidebar -->

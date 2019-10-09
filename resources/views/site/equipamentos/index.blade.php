@@ -66,7 +66,11 @@
                     <td style="vertical-align:middle;">{{ $equipamento->apelido }}</td>
                     <td style="vertical-align:middle;">{{ $equipamento->numeroserie }}</td>
                     <td style="vertical-align:middle;">{{ $equipamento->patrimonio }}</td>
-                    <td style="vertical-align:middle;">{{ $equipamento->localizacao_equipamentos }}</td>
+                    @if($equipamento->localizacao_equipamentos->last()->situacao->id == 1 || $equipamento->localizacao_equipamentos->last()->situacao->id == 2)
+                        <td style="vertical-align:middle;">{{ $equipamento->localizacao_equipamentos->last()->estado->uf }} / {{ $equipamento->localizacao_equipamentos->last()->cidade->nome }}{{ $equipamento->localizacao_equipamentos->last()->localizacao1->id !=  0 ? '/ ' . $equipamento->localizacao_equipamentos->last()->localizacao1->nome  : '' }}{{ $equipamento->localizacao_equipamentos->last()->localizacao2->id !=  0 ? '/ ' . $equipamento->localizacao_equipamentos->last()->localizacao2->nome  : '' }}{{ $equipamento->localizacao_equipamentos->last()->localizacao3->id !=  0 ? '/ ' . $equipamento->localizacao_equipamentos->last()->localizacao3->nome  : '' }}{{ $equipamento->localizacao_equipamentos->last()->localizacao4->id !=  0 ? '/ ' . $equipamento->localizacao_equipamentos->last()->localizacao4->nome  : '' }}</td>
+                    @elseif($equipamento->localizacao_equipamentos->last()->situacao->id == 5)
+                        <td style="vertical-align:middle;">{{ $equipamento->localizacao_equipamentos->last()->observacao }}</td>
+                    @endif 
                     <td>                         
                         <a href="{{ route('equipamentos.show',$equipamento->id) }}" title="Exibir" type="button" class="btn btn-info btn-sm"><i class="fa fa-search-plus"></i></a>                       
                     </td>

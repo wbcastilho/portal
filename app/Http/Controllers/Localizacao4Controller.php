@@ -24,21 +24,24 @@ class Localizacao4Controller extends Controller
     {
         $searchText=trim($request->get('searchText'));
        
-        $localizacoes = Localizacao4::where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
-        ->orWhereHas('localizacao3', function ($query) use ($searchText) {
-            $query->where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
+        $localizacoes = Localizacao4::where('praca_id', '=', auth()->user()->praca->id)
+        ->where(function ($query) use ($searchText){
+            $query->where('nome', 'like', '%' . $searchText . '%');
+            $query->orWhereHas('localizacao3', function ($query) use ($searchText) {
+                $query->where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
                 ->orWhereHas('localizacao2', function ($query) use ($searchText) {
                     $query->where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
-                        ->orWhereHas('localizacao1', function ($query) use ($searchText) {
-                            $query->where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
-                                ->orWhereHas('cidade', function ($query) use ($searchText) {
-                                    $query->where('nome', 'like', '%' . $searchText . '%')
-                                        ->orWhereHas('estado', function ($query) use ($searchText) {
-                                            $query->where('nome', 'like', '%' . $searchText . '%');
-                                        });
-                                });
-                            }); 
-                        });                              
+                    ->orWhereHas('localizacao1', function ($query) use ($searchText) {
+                        $query->where('nome', 'like', '%' . $searchText . '%')->where('praca_id', '=', auth()->user()->praca->id)
+                        ->orWhereHas('cidade', function ($query) use ($searchText) {
+                            $query->where('nome', 'like', '%' . $searchText . '%')
+                            ->orWhereHas('estado', function ($query) use ($searchText) {
+                                $query->where('nome', 'like', '%' . $searchText . '%');
+                            });
+                        });
+                    }); 
+                });                              
+            });
         })->paginate(10);
 
         //Monta o breadcrumb

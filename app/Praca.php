@@ -10,7 +10,7 @@ class Praca extends Model
         'nome'
     ];
 
-    public function users()
+    public function user()
     {
       return $this->hasMany('App\User');
     }

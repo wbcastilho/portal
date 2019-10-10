@@ -17,7 +17,7 @@ class Localizacao3 extends Model
 
     public function localizacao2()
     {
-      return $this->belongsTo('App\Localizacao2');
+      return $this->belongsTo('App\Localizacao2')->withTrashed(); 
     }
 
     public function localizacao4()

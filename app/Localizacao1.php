@@ -29,7 +29,7 @@ class Localizacao1 extends Model
 
     public function praca()
     {
-      return $this->belongsTo('App\Praca');
+      return $this->belongsTo('App\Praca')->withTrashed(); 
     }   
 
     public function localizacao2()

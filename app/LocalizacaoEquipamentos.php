@@ -22,19 +22,19 @@ class LocalizacaoEquipamentos extends Model
         return \Carbon\Carbon::parse($this->data)->format('H:i:s');
     }
     
-    public function equipamentos()
+    public function equipamento()
     {
-      return $this->belongsTo('App\Equipamento');
+      return $this->belongsTo('App\Equipamento')->withTrashed(); 
     }
 
     public function situacao()
     {     
-      return $this->belongsTo('App\Situacao');
+      return $this->belongsTo('App\Situacao'); 
     }
 
     public function user()
     {     
-      return $this->belongsTo('App\User');
+      return $this->belongsTo('App\User')->withTrashed(); 
     }
 
     public function estado()
@@ -49,21 +49,21 @@ class LocalizacaoEquipamentos extends Model
 
     public function localizacao1()
     {     
-      return $this->belongsTo('App\Localizacao1');
+      return $this->belongsTo('App\Localizacao1')->withTrashed(); 
     }
 
     public function localizacao2()
     {     
-      return $this->belongsTo('App\Localizacao2');
+      return $this->belongsTo('App\Localizacao2')->withTrashed(); 
     }
 
     public function localizacao3()
     {     
-      return $this->belongsTo('App\Localizacao3');
+      return $this->belongsTo('App\Localizacao3')->withTrashed(); 
     }
 
     public function localizacao4()
     {     
-      return $this->belongsTo('App\Localizacao4');
+      return $this->belongsTo('App\Localizacao4')->withTrashed(); 
     }
 }

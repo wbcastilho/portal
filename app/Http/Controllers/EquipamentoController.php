@@ -25,7 +25,27 @@ class EquipamentoController extends Controller
     public function index(Request $request)
     {
         $searchText=trim($request->get('searchText'));
-                      
+               
+        /*$equipamentos = DB::table('localizacao_equipamentos')
+            ->join('users', 'localizacao_equipamentos.user_id', '=', 'users.id') 
+            ->join('equipamentos', 'localizacao_equipamentos.equipamento_id', '=', 'equipamentos.id') 
+            ->join('estados', 'localizacao_equipamentos.estado_id', '=', 'estados.id') 
+            ->join('cidades', 'localizacao_equipamentos.cidade_id', '=', 'cidades.id') 
+            ->join('localizacoes1', 'localizacao_equipamentos.localizacao1_id', '=', 'localizacoes1.id') 
+            ->join('localizacoes2', 'localizacao_equipamentos.localizacao2_id', '=', 'localizacoes2.id') 
+            ->join('localizacoes3', 'localizacao_equipamentos.localizacao3_id', '=', 'localizacoes3.id') 
+            ->join('localizacoes4', 'localizacao_equipamentos.localizacao4_id', '=', 'localizacoes4.id') 
+            ->join('setores', 'equipamentos.setor_id', '=', 'setores.id')           
+            ->join('modelos', 'equipamentos.modelo_id', '=', 'modelos.id')           
+            ->join('tipos', 'modelos.tipo_id', '=', 'tipos.id')           
+            ->join('fabricantes', 'modelos.fabricante_id', '=', 'fabricantes.id')                                
+            ->selectRaw('MAX(localizacao_equipamentos.id), localizacao_equipamentos.equipamento_id, equipamentos.apelido, setores.nome AS setor, equipamentos.numeroserie, equipamentos.patrimonio, localizacao_equipamentos.data, estados.uf, cidades.nome AS cidade, localizacoes1.nome AS localizacao1, localizacoes2.nome AS localizacao2, localizacoes3.nome AS localizacao3, localizacoes4.nome AS localizacao4, modelos.nome AS modelo, tipos.nome AS tipo, fabricantes.nome AS fabricante, modelos.imagem, equipamentos.apelido')
+            ->groupBy('localizacao_equipamentos.equipamento_id')
+            ->whereRaw('equipamentos.praca_id=?', [auth()->user()->praca->id])           
+            ->toSql();*/
+
+        //$equipamentos = LocalizacaoEquipamentos::selectRaw('MAX(id), equipamento_id')->groupBy('equipamento_id')->paginate(10);
+              
         $equipamentos = Equipamento::where('praca_id', '=', auth()->user()->praca->id)
         ->where(function ($query) use ($searchText)  { 
             $query->orWhere('apelido', 'like', '%' . $searchText . '%');
@@ -36,16 +56,15 @@ class EquipamentoController extends Controller
             });
             $query->orWhereHas('modelo', function ($query) use ($searchText) {
                 $query->where('nome', 'like', '%' . $searchText . '%')
-                ->orWhereHas('fabricante', function ($query) use ($searchText) {
+                ->orWhereHas('fabricante', function ($query) use ($searchText) {                                     
                     $query->where('nome', 'like', '%' . $searchText . '%');                       
-                })                              
+                })                          
                 ->orWhereHas('tipo', function ($query) use ($searchText) {
                     $query->where('nome', 'like', '%' . $searchText . '%');                       
                 });
             }); 
-            /*$query->orWhereHas('localizacao_equipamentos', function ($query) use ($searchText) {                                       
-                $query->where(function ($query) use ($searchText) {
-                                                                          
+            $query->orWhereHas('localizacao_equipamentos', function ($query) use ($searchText) {                                                                   
+                $query->where(function ($query) use ($searchText) {                                                                         
                     $query->whereHas('estado', function ($query) use ($searchText) {
                         $query->where('uf', 'like', '%' . $searchText . '%');                       
                     })
@@ -68,8 +87,8 @@ class EquipamentoController extends Controller
                         $query->where('nome', 'like', '%' . $searchText . '%');                       
                     });
                 }); 
-            });*/               
-        })->paginate();        
+            })->selectRaw('MAX(id), equipamento_id')->groupBy('equipamento_id');               
+        })->paginate(10);       
         
         //dd($equipamentos);
 

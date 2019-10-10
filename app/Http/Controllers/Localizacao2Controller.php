@@ -197,18 +197,18 @@ class Localizacao2Controller extends Controller
      */
     public function destroy($id)
     {
-        if(Localizacao2::has('localizacao_equipamentos')->find($id) == null)
-        {
+        //if(Localizacao2::has('localizacao_equipamentos')->find($id) == null)
+        //{
             $localizacao = Localizacao2::find($id);
 
             $localizacao->delete();
-        }
+        /*}
         else
         {
             return response()->json([
                 'fail' => true                
             ]);
-        }
+        }*/
     }
 
     public function getLocalizacao3($id)

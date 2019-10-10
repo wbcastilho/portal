@@ -57,7 +57,7 @@
               <th style="width: 50px">Ação</th>                                        
           </tr>
       </thead>
-      <tbody>
+      <tbody>       
           @if (count($equipamentos) > 0)
             @foreach ($equipamentos as $equipamento)               
                 <tr>                             
@@ -75,6 +75,20 @@
                         <a href="{{ route('equipamentos.show',$equipamento->id) }}" title="Exibir" type="button" class="btn btn-info btn-sm"><i class="fa fa-search-plus"></i></a>                       
                     </td>
                 </tr>
+
+                {{--<tr>                             
+                    <td class="text-center" style="vertical-align:middle;">{{ $equipamento->id }}</td>
+                    <td style="vertical-align:middle;"></td>
+                    <td style="vertical-align:middle;">{{ $equipamento->apelido }}</td>
+                    <td style="vertical-align:middle;"></td>
+                    <td style="vertical-align:middle;"></td>
+                   
+                        <td style="vertical-align:middle;"></td>
+                    
+                    <td>                         
+                        <a href="" title="Exibir" type="button" class="btn btn-info btn-sm"><i class="fa fa-search-plus"></i></a>                       
+                    </td>
+                </tr>--}}
             @endforeach
           @else
             <tr style="height:45px;">

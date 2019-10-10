@@ -18,16 +18,16 @@ class Modelo extends Model
 
     public function fabricante()
     {
-      return $this->belongsTo('App\Fabricante');     
+      return $this->belongsTo('App\Fabricante')->withTrashed();     
     }
 
     public function tipo()
     {
-      return $this->belongsTo('App\Tipo');
+      return $this->belongsTo('App\Tipo')->withTrashed();  
     }
 
     public function equipamento()
     {     
-      return $this->hasMany('App\Equipamento');
+      return $this->hasMany('App\Equipamento'); 
     }
 }

@@ -17,17 +17,17 @@ class Equipamento extends Model
 
     public function modelo()
     {
-      return $this->belongsTo('App\Modelo');     
+      return $this->belongsTo('App\Modelo')->withTrashed();     
     }
 
     public function setor()
     {
-      return $this->belongsTo('App\Setor');
+      return $this->belongsTo('App\Setor')->withTrashed(); 
     }
 
     public function praca()
     {
-      return $this->belongsTo('App\Praca');
+      return $this->belongsTo('App\Praca')->withTrashed(); 
     }
 
     public function localizacao_equipamentos()

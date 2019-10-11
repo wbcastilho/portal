@@ -35,7 +35,12 @@ class Equipamento extends Model
       return $this->hasMany('App\LocalizacaoEquipamentos');
     }
 
-    public function estados()
+    public function estado()
+    {
+        return $this->hasManyThrough('App\Estado', 'App\LocalizacaoEquipamentos');
+    }
+
+    /*public function estados()
     {
          return $this->belongsToMany('App\Estado', 'localizacao_equipamentos', 'equipamento_id', 'estado_id');
     }
@@ -63,5 +68,5 @@ class Equipamento extends Model
     public function localizacoes4()
     {
          return $this->belongsToMany('App\Localizacao4', 'localizacao_equipamentos', 'equipamento_id', 'localizacao4_id');
-    }
+    }*/
 }

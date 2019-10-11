@@ -17,7 +17,7 @@ class Localizacao2 extends Model
 
     public function localizacao1()
     {
-      return $this->belongsTo('App\Localizacao1');
+      return $this->belongsTo('App\Localizacao1')->withTrashed();
     }
 
     public function localizacao3()
@@ -25,10 +25,10 @@ class Localizacao2 extends Model
       return $this->hasMany('App\Localizacao3');
     }
 
-    public function equipamentos()
+    /*public function equipamentos()
     {
          return $this->belongsToMany('App\Equipamento', 'localizacao_equipamentos', 'localizacao2_id', 'equipamento_id');
-    }
+    }*/
 
     public function localizacao_equipamentos()
     {

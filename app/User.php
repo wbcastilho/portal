@@ -46,4 +46,9 @@ class User extends Authenticatable
     {
       return $this->hasMany('App\LocalizacaoEquipamentos');
     }
+
+    public function log()
+    {
+      return $this->hasMany('App\Log');
+    }
 }

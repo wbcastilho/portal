@@ -45,8 +45,20 @@ class EquipamentoController extends Controller
             ->toSql();*/
 
         //$equipamentos = LocalizacaoEquipamentos::selectRaw('MAX(id), equipamento_id')->groupBy('equipamento_id')->paginate(10);
+            
+        $equipamentos = Equipamento::where('praca_id', '=', auth()->user()->praca->id)                         
+        ->with(["localizacao_equipamentos" => function ($query) use ($searchText) {           
+                                                 
+                $query->with(["estado" => function ($query) use ($searchText) {           
+                    $query->where('nome', 'LIKE', '%' . $searchText . '%');   
+                }]);
               
-        $equipamentos = Equipamento::where('praca_id', '=', auth()->user()->praca->id)
+                       
+               
+            
+        }])->get();
+
+        /*$equipamentos = Equipamento::where('praca_id', '=', auth()->user()->praca->id)
         ->where(function ($query) use ($searchText)  { 
             $query->orWhere('apelido', 'like', '%' . $searchText . '%');
             $query->orWhere('numeroserie', 'like', '%' . $searchText . '%');
@@ -87,10 +99,10 @@ class EquipamentoController extends Controller
                         $query->where('nome', 'like', '%' . $searchText . '%');                       
                     });
                 }); 
-            })->selectRaw('MAX(id), equipamento_id')->groupBy('equipamento_id');               
-        })->paginate(10);       
+            });              
+        })->paginate(10);*/ 
         
-        //dd($equipamentos);
+        dd($equipamentos);
 
         //Monta o breadcrumb
         $caminhos = [         

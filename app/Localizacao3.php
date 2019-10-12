@@ -25,10 +25,10 @@ class Localizacao3 extends Model
       return $this->hasMany('App\Localizacao4');
     }
 
-    /*public function equipamentos()
+    public function equipamentos()
     {
          return $this->belongsToMany('App\Equipamento', 'localizacao_equipamentos', 'localizacao3_id', 'equipamento_id');
-    }*/
+    }
 
     public function localizacao_equipamentos()
     {

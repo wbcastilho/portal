@@ -17,8 +17,9 @@ class UserObserver
     {
         $log = Log::create([
             'acao' => 'Create', 
-            'model' => 'User', 
-            'user_id' => $user->id                    
+            'model' => 'User',  
+            'model_id' => $user->id,             
+            'user_id' => auth()->user()->id                   
         ]);
     }
 
@@ -33,7 +34,8 @@ class UserObserver
         $log = Log::create([
             'acao' => 'Update', 
             'model' => 'User', 
-            'user_id' => $user->id                    
+            'model_id' => $user->id, 
+            'user_id' => auth()->user()->id                   
         ]);
     }
 
@@ -48,7 +50,8 @@ class UserObserver
         $log = Log::create([
             'acao' => 'Delete', 
             'model' => 'User', 
-            'user_id' => $user->id                    
+            'model_id' => $user->id,       
+            'user_id' => auth()->user()->id                      
         ]);
     }
 
@@ -62,8 +65,9 @@ class UserObserver
     {
         $log = Log::create([
             'acao' => 'Restore', 
-            'model' => 'User', 
-            'user_id' => $user->id                    
+            'model' => 'User',
+            'model_id' => $user->id,         
+            'user_id' => auth()->user()->id                      
         ]);
     }
 
@@ -78,7 +82,8 @@ class UserObserver
         $log = Log::create([
             'acao' => 'Force Delete', 
             'model' => 'User', 
-            'user_id' => $user->id                    
+            'model_id' => $user->id,        
+            'user_id' => auth()->user()->id                      
         ]);
     }
 }

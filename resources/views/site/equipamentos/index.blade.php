@@ -60,7 +60,7 @@
       <tbody>       
           @if (count($equipamentos) > 0)
             @foreach ($equipamentos as $equipamento)               
-                <tr>                             
+                {{--<tr>                             
                     <td class="text-center" style="vertical-align:middle;">{{ $equipamento->id }}</td>
                     <td style="vertical-align:middle;">{{ $equipamento->modelo->fabricante->nome }} {{ $equipamento->modelo->tipo->nome }} {{ $equipamento->modelo->nome }}</td>
                     <td style="vertical-align:middle;">{{ $equipamento->apelido }}</td>
@@ -73,6 +73,22 @@
                     @endif 
                     <td>                         
                         <a href="{{ route('equipamentos.show',$equipamento->id) }}" title="Exibir" type="button" class="btn btn-info btn-sm"><i class="fa fa-search-plus"></i></a>                       
+                    </td>
+                </tr>--}}
+
+                <tr>                             
+                    <td class="text-center" style="vertical-align:middle;">{{ $equipamento->equipamento_id }}</td>
+                    <td style="vertical-align:middle;">{{ $equipamento->fabricante }} {{ $equipamento->tipo }} {{ $equipamento->modelo }}</td>
+                    <td style="vertical-align:middle;">{{ $equipamento->apelido }}</td>
+                    <td style="vertical-align:middle;">{{ $equipamento->numeroserie }}</td>
+                    <td style="vertical-align:middle;">{{ $equipamento->patrimonio }}</td>
+                    @if($equipamento->situacao_id == 1 || $equipamento->situacao_id == 2)
+                        <td style="vertical-align:middle;">{{ $equipamento->uf }} / {{ $equipamento->cidade }}{{ $equipamento->localizacao1_id !=  0 ? '/ ' . $equipamento->localizacao1  : '' }}{{ $equipamento->localizacao2_id !=  0 ? '/ ' . $equipamento->localizacao2  : '' }}{{ $equipamento->localizacao3_id !=  0 ? '/ ' . $equipamento->localizacao3  : '' }}{{ $equipamento->localizacao4_id !=  0 ? '/ ' . $equipamento->localizacao4  : '' }}</td>
+                    @elseif($equipamento->situacao_id == 5)
+                        <td style="vertical-align:middle;">{{ $equipamento->observacao }}</td>
+                    @endif
+                   <td>                         
+                        <a href="{{ route('equipamentos.show',$equipamento->equipamento_id) }}" title="Exibir" type="button" class="btn btn-info btn-sm"><i class="fa fa-search-plus"></i></a>                       
                     </td>
                 </tr>
 

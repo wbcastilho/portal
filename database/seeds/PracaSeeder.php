@@ -14,19 +14,19 @@ class PracaSeeder extends Seeder
         $now = date("Y-m-d H:i:s");    
         DB::table("pracas")->insert([
             [            
-                "nome"       => "EPTV Campinas",             
+                "nome"       => "Campinas",             
                 "created_at" => $now,
                 "updated_at" => $now,
             ], [                     
-                "nome"       => "EPTV Ribeirão Preto",             
+                "nome"       => "Ribeirão Preto",             
                 "created_at" => $now,
                 "updated_at" => $now,
             ], [
-                "nome"       => "EPTV São Carlos",             
+                "nome"       => "São Carlos",             
                 "created_at" => $now,
                 "updated_at" => $now,
             ], [
-                "nome"       => "EPTV Sul de Minas",             
+                "nome"       => "Sul de Minas",             
                 "created_at" => $now,
                 "updated_at" => $now,
             ],

@@ -131,8 +131,8 @@ class ModeloController extends Controller
      */
     public function edit($id)
     {
-        $fabricantes = Fabricante::orderBy("nome","ASC")->get();
-        $tipos = Tipo::orderBy("nome","ASC")->get();
+        $fabricantes = Fabricante::withTrashed()->orderBy("nome","ASC")->get();
+        $tipos = Tipo::withTrashed()->orderBy("nome","ASC")->get();
         $modelo = Modelo::find($id);
 
         //Monta o breadcrumb

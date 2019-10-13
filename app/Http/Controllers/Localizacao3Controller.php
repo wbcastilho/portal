@@ -141,8 +141,8 @@ class Localizacao3Controller extends Controller
     {
         $estados = Estado::orderBy("nome","ASC")->get();
         $cidades = Cidade::orderBy("nome","ASC")->get();
-        $localizacoes1 = Localizacao1::where('praca_id', '=', auth()->user()->praca->id)->orderBy("nome","ASC")->get();       
-        $localizacoes2 = Localizacao2::where('praca_id', '=', auth()->user()->praca->id)->orderBy("nome","ASC")->get(); 
+        $localizacoes1 = Localizacao1::withTrashed()->where('praca_id', '=', auth()->user()->praca->id)->orderBy("nome","ASC")->get();       
+        $localizacoes2 = Localizacao2::withTrashed()->where('praca_id', '=', auth()->user()->praca->id)->orderBy("nome","ASC")->get(); 
         $localizacao3 = Localizacao3::find($id);
 
         //Monta o breadcrumb

@@ -132,7 +132,7 @@ class Localizacao2Controller extends Controller
     {        
         $estados = Estado::orderBy("nome","ASC")->get();
         $cidades = Cidade::orderBy("nome","ASC")->get();
-        $localizacoes1 = Localizacao1::where('praca_id', '=', auth()->user()->praca->id)->orderBy("nome","ASC")->get();       
+        $localizacoes1 = Localizacao1::withTrashed()->where('praca_id', '=', auth()->user()->praca->id)->orderBy("nome","ASC")->get();       
         $localizacao2 = Localizacao2::find($id);
 
         //Monta o breadcrumb

@@ -25,62 +25,61 @@ class EquipamentoController extends Controller
     public function index(Request $request)
     {
         $searchText=trim($request->get('searchText'));
-               
-        
-            $equipamentos = DB::table('localizacao_equipamentos')
-            ->join(DB::raw('(SELECT MAX(localizacao_equipamentos.data) AS data, localizacao_equipamentos.equipamento_id FROM localizacao_equipamentos GROUP BY localizacao_equipamentos.equipamento_id) AS b'), 
-            function($join)
-            {
-                $join->on('localizacao_equipamentos.equipamento_id', '=', 'b.equipamento_id');
-                $join->on('localizacao_equipamentos.data', '=', 'b.data');
-            })           
-            ->join('users', 'localizacao_equipamentos.user_id', '=', 'users.id') 
-            ->join('equipamentos', 'localizacao_equipamentos.equipamento_id', '=', 'equipamentos.id') 
-            ->join('estados', 'localizacao_equipamentos.estado_id', '=', 'estados.id') 
-            ->join('cidades', 'localizacao_equipamentos.cidade_id', '=', 'cidades.id') 
-            ->join('localizacoes1', 'localizacao_equipamentos.localizacao1_id', '=', 'localizacoes1.id') 
-            ->join('localizacoes2', 'localizacao_equipamentos.localizacao2_id', '=', 'localizacoes2.id') 
-            ->join('localizacoes3', 'localizacao_equipamentos.localizacao3_id', '=', 'localizacoes3.id') 
-            ->join('localizacoes4', 'localizacao_equipamentos.localizacao4_id', '=', 'localizacoes4.id') 
-            ->join('setores', 'equipamentos.setor_id', '=', 'setores.id')           
-            ->join('modelos', 'equipamentos.modelo_id', '=', 'modelos.id')           
-            ->join('tipos', 'modelos.tipo_id', '=', 'tipos.id')           
-            ->join('fabricantes', 'modelos.fabricante_id', '=', 'fabricantes.id')                                
-            ->selectRaw('localizacao_equipamentos.id, localizacao_equipamentos.equipamento_id, equipamentos.apelido, setores.nome AS setor, equipamentos.numeroserie, equipamentos.patrimonio, localizacao_equipamentos.data, estados.uf, cidades.nome AS cidade, localizacoes1.nome AS localizacao1, localizacoes2.nome AS localizacao2, localizacoes3.nome AS localizacao3, localizacoes4.nome AS localizacao4, modelos.nome AS modelo, tipos.nome AS tipo, fabricantes.nome AS fabricante, modelos.imagem, equipamentos.apelido, localizacao_equipamentos.situacao_id, localizacao_equipamentos.observacao, localizacao_equipamentos.localizacao1_id, localizacao_equipamentos.localizacao2_id, localizacao_equipamentos.localizacao3_id, localizacao_equipamentos.localizacao4_id')
-            ->groupBy('localizacao_equipamentos.equipamento_id')
-            ->where('equipamentos.praca_id', '=', auth()->user()->praca->id)
-            ->where(function ($query) use ($searchText)  {                
-                $query->orWhere(function ($query) use ($searchText)  { 
-                    $query->orWhere('equipamentos.apelido', 'like', '%' . $searchText . '%');                   
-                    $query->orWhere('equipamentos.numeroserie', 'like', '%' . $searchText . '%');                   
-                    $query->orWhere('equipamentos.patrimonio', 'like', '%' . $searchText . '%');                   
-                    $query->orWhere('equipamentos.id', 'like', '%' . $searchText . '%');                   
-                    $query->orWhere('fabricantes.nome', 'like', '%' . $searchText . '%');                   
-                    $query->orWhere('tipos.nome', 'like', '%' . $searchText . '%');                   
-                    $query->orWhere('modelos.nome', 'like', '%' . $searchText . '%');                   
-                    $query->orWhere('users.name', 'like', '%' . $searchText . '%');                   
-                    $query->orWhere('setores.nome', 'like', '%' . $searchText . '%');                   
-                    $query->orWhere('estados.uf', 'like', '%' . $searchText . '%');                   
-                    $query->orWhere('cidades.nome', 'like', '%' . $searchText . '%');                   
-                    $query->orWhere('localizacoes1.nome', 'like', '%' . $searchText . '%');                   
-                    $query->orWhere('localizacoes2.nome', 'like', '%' . $searchText . '%');                   
-                    $query->orWhere('localizacoes3.nome', 'like', '%' . $searchText . '%');                   
-                    $query->orWhere('localizacoes4.nome', 'like', '%' . $searchText . '%');                   
-                });
-            })
-            ->orderBy('fabricantes.nome', 'asc')
-            ->orderBy('tipos.nome', 'asc')
-            ->orderBy('modelos.nome', 'asc')
-            ->orderBy('equipamentos.apelido', 'asc')
-            ->orderBy('equipamentos.numeroserie', 'asc')
-            ->orderBy('equipamentos.patrimonio', 'asc')
-            ->orderBy('estados.uf', 'asc')
-            ->orderBy('cidades.nome', 'asc')
-            ->orderBy('localizacoes1.nome', 'asc')
-            ->orderBy('localizacoes2.nome', 'asc')
-            ->orderBy('localizacoes3.nome', 'asc')
-            ->orderBy('localizacoes4.nome', 'asc')
-            ->paginate(10);          
+                       
+        $equipamentos = DB::table('localizacao_equipamentos')
+        ->join(DB::raw('(SELECT MAX(localizacao_equipamentos.data) AS data, localizacao_equipamentos.equipamento_id FROM localizacao_equipamentos GROUP BY localizacao_equipamentos.equipamento_id) AS b'), 
+        function($join)
+        {
+            $join->on('localizacao_equipamentos.equipamento_id', '=', 'b.equipamento_id');
+            $join->on('localizacao_equipamentos.data', '=', 'b.data');
+        })           
+        ->join('users', 'localizacao_equipamentos.user_id', '=', 'users.id') 
+        ->join('equipamentos', 'localizacao_equipamentos.equipamento_id', '=', 'equipamentos.id') 
+        ->join('estados', 'localizacao_equipamentos.estado_id', '=', 'estados.id') 
+        ->join('cidades', 'localizacao_equipamentos.cidade_id', '=', 'cidades.id') 
+        ->join('localizacoes1', 'localizacao_equipamentos.localizacao1_id', '=', 'localizacoes1.id') 
+        ->join('localizacoes2', 'localizacao_equipamentos.localizacao2_id', '=', 'localizacoes2.id') 
+        ->join('localizacoes3', 'localizacao_equipamentos.localizacao3_id', '=', 'localizacoes3.id') 
+        ->join('localizacoes4', 'localizacao_equipamentos.localizacao4_id', '=', 'localizacoes4.id') 
+        ->join('setores', 'equipamentos.setor_id', '=', 'setores.id')           
+        ->join('modelos', 'equipamentos.modelo_id', '=', 'modelos.id')           
+        ->join('tipos', 'modelos.tipo_id', '=', 'tipos.id')           
+        ->join('fabricantes', 'modelos.fabricante_id', '=', 'fabricantes.id')                                
+        ->selectRaw('localizacao_equipamentos.id, localizacao_equipamentos.equipamento_id, equipamentos.apelido, setores.nome AS setor, equipamentos.numeroserie, equipamentos.patrimonio, localizacao_equipamentos.data, estados.uf, cidades.nome AS cidade, localizacoes1.nome AS localizacao1, localizacoes2.nome AS localizacao2, localizacoes3.nome AS localizacao3, localizacoes4.nome AS localizacao4, modelos.nome AS modelo, tipos.nome AS tipo, fabricantes.nome AS fabricante, modelos.imagem, equipamentos.apelido, localizacao_equipamentos.situacao_id, localizacao_equipamentos.observacao, localizacao_equipamentos.localizacao1_id, localizacao_equipamentos.localizacao2_id, localizacao_equipamentos.localizacao3_id, localizacao_equipamentos.localizacao4_id')
+        ->groupBy('localizacao_equipamentos.equipamento_id')
+        ->where('equipamentos.praca_id', '=', auth()->user()->praca->id)
+        ->where(function ($query) use ($searchText)  {                
+            $query->orWhere(function ($query) use ($searchText)  { 
+                $query->orWhere('equipamentos.apelido', 'like', '%' . $searchText . '%');                   
+                $query->orWhere('equipamentos.numeroserie', 'like', '%' . $searchText . '%');                   
+                $query->orWhere('equipamentos.patrimonio', 'like', '%' . $searchText . '%');                   
+                $query->orWhere('equipamentos.id', 'like', '%' . $searchText . '%');                   
+                $query->orWhere('fabricantes.nome', 'like', '%' . $searchText . '%');                   
+                $query->orWhere('tipos.nome', 'like', '%' . $searchText . '%');                   
+                $query->orWhere('modelos.nome', 'like', '%' . $searchText . '%');                   
+                $query->orWhere('users.name', 'like', '%' . $searchText . '%');                   
+                $query->orWhere('setores.nome', 'like', '%' . $searchText . '%');                   
+                $query->orWhere('estados.uf', 'like', '%' . $searchText . '%');                   
+                $query->orWhere('cidades.nome', 'like', '%' . $searchText . '%');                   
+                $query->orWhere('localizacoes1.nome', 'like', '%' . $searchText . '%');                   
+                $query->orWhere('localizacoes2.nome', 'like', '%' . $searchText . '%');                   
+                $query->orWhere('localizacoes3.nome', 'like', '%' . $searchText . '%');                   
+                $query->orWhere('localizacoes4.nome', 'like', '%' . $searchText . '%');                   
+            });
+        })
+        ->orderBy('fabricantes.nome', 'asc')
+        ->orderBy('tipos.nome', 'asc')
+        ->orderBy('modelos.nome', 'asc')
+        ->orderBy('equipamentos.apelido', 'asc')
+        ->orderBy('equipamentos.numeroserie', 'asc')
+        ->orderBy('equipamentos.patrimonio', 'asc')
+        ->orderBy('estados.uf', 'asc')
+        ->orderBy('cidades.nome', 'asc')
+        ->orderBy('localizacoes1.nome', 'asc')
+        ->orderBy('localizacoes2.nome', 'asc')
+        ->orderBy('localizacoes3.nome', 'asc')
+        ->orderBy('localizacoes4.nome', 'asc')
+        ->paginate(10);          
 
         /*$equipamentos = Equipamento::where('praca_id', '=', auth()->user()->praca->id)
         ->where(function ($query) use ($searchText)  { 
@@ -281,14 +280,13 @@ class EquipamentoController extends Controller
      */
     public function edit($id)
     {
-        $fabricantes = Fabricante::orderBy("nome","ASC")->get();
-        $tipos = Tipo::orderBy("nome","ASC")->get();
-        
-        $setores = Setor::orderBy("nome","ASC")->get();              
+        $fabricantes = Fabricante::withTrashed()->orderBy("nome","ASC")->get();
+        $tipos = Tipo::withTrashed()->orderBy("nome","ASC")->get();        
+        $setores = Setor::withTrashed()->orderBy("nome","ASC")->get();              
         $estados = Estado::orderBy("nome","ASC")->get();    
         $equipamento = Equipamento::find($id);
         $modelos = Modelo::where('fabricante_id', '=', $equipamento->modelo->fabricante->id)
-            ->where('tipo_id', '=', $equipamento->modelo->tipo->id)->get();
+            ->where('tipo_id', '=', $equipamento->modelo->tipo->id)->withTrashed()->get();
 
          //Monta o breadcrumb
          $caminhos = [

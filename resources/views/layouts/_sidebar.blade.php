@@ -69,6 +69,12 @@
             <i class="fa fa-file-text-o"></i>
             <span>Relatórios</span>            
           </a>         
+        </li> 
+        <li>
+          <a href="#">
+            <i class="fa fa-file-o"></i>
+            <span>Logs</span>            
+          </a>         
         </li>                                              
       </ul>
     </section>

@@ -10,6 +10,7 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Gate;
 
 class UsuarioController extends Controller
 {
@@ -20,18 +21,29 @@ class UsuarioController extends Controller
      */
     public function index(Request $request)
     {
-        $searchText=trim($request->get('searchText'));
+      //Autenticação caso não tenha permissão para visualizar os cadastros  
+      if(Gate::denies('cadastro-view')){
+        abort(403,"Não autorizado!");
+      }
+      if(Gate::denies('usuario-view')){
+        abort(403,"Não autorizado!");
+      }
 
-        $usuarios = User::with(['nivel', 'praca'])->where('name', 'LIKE', $searchText . '%')->where('id', '>', 0)->orderBy("name","ASC")->paginate(10);      
+      $searchText=trim($request->get('searchText'));
 
-        //Monta o breadcrumb
-        $caminhos = [
-          ['url'=>'','titulo'=>'Cadastros'],
-          ['url'=>'','titulo'=>'Usuários']
-        ];
+      $usuarios = User::with(['nivel', 'praca'])
+      ->where('name', 'LIKE', $searchText . '%')
+      ->where('id', '>', 0)
+      ->orderBy("name","ASC")->paginate(10);      
 
-        //Chamada da view passando as variaveis $registros
-        return view('site.usuarios.index', compact('usuarios', 'caminhos', 'searchText'));
+      //Monta o breadcrumb
+      $caminhos = [
+        ['url'=>'','titulo'=>'Cadastros'],
+        ['url'=>'','titulo'=>'Usuários']
+      ];
+
+      //Chamada da view passando as variaveis $registros
+      return view('site.usuarios.index', compact('usuarios', 'caminhos', 'searchText'));
     }
 
     /**
@@ -41,6 +53,14 @@ class UsuarioController extends Controller
      */
     public function create()
     {
+      //Autenticação caso não tenha permissão para visualizar os cadastros  
+      if(Gate::denies('cadastro-view')){
+        abort(403,"Não autorizado!");
+      }
+      if(Gate::denies('usuario-create')){
+        abort(403,"Não autorizado!");
+      }
+
       $niveis = Nivel::orderBy("id","DESC")->get();
       $pracas = Praca::orderBy("id","DESC")->get();
 
@@ -61,7 +81,15 @@ class UsuarioController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {       
+    {    
+      //Autenticação caso não tenha permissão para visualizar os cadastros  
+      if(Gate::denies('cadastro-view')){
+        abort(403,"Não autorizado!");
+      }
+      if(Gate::denies('usuario-create')){
+        abort(403,"Não autorizado!");
+      }
+
       $rules=[
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:users',
@@ -110,17 +138,25 @@ class UsuarioController extends Controller
      */
     public function edit($id)
     {
-       //Faz a consulta pesquisando pelo id
-        $usuario = User::find($id);
-        $niveis = Nivel::orderBy("id","DESC")->get();
-        $pracas = Praca::orderBy("id","DESC")->get();
+      //Autenticação caso não tenha permissão para visualizar os cadastros  
+      if(Gate::denies('cadastro-view')){
+        abort(403,"Não autorizado!");
+      }
+      if(Gate::denies('usuario-edit')){
+        abort(403,"Não autorizado!");
+      }
 
-        //Monta o breadcrumb
-         $caminhos = [
-            ['url'=>'','titulo'=>'Cadastro'],
-            ['url'=>route('usuarios.index'),'titulo'=>'Usuários'],
-            ['url'=>'','titulo'=>'Formulário']
-        ];
+      //Faz a consulta pesquisando pelo id
+      $usuario = User::find($id);
+      $niveis = Nivel::orderBy("id","DESC")->get();
+      $pracas = Praca::orderBy("id","DESC")->get();
+
+      //Monta o breadcrumb
+        $caminhos = [
+          ['url'=>'','titulo'=>'Cadastro'],
+          ['url'=>route('usuarios.index'),'titulo'=>'Usuários'],
+          ['url'=>'','titulo'=>'Formulário']
+      ];
 
       return view('site.usuarios.editar', compact('usuario', 'niveis', 'pracas', 'caminhos'));
     }
@@ -133,7 +169,15 @@ class UsuarioController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {       
+    {     
+      //Autenticação caso não tenha permissão para visualizar os cadastros  
+      if(Gate::denies('cadastro-view')){
+        abort(403,"Não autorizado!");
+      }
+      if(Gate::denies('usuario-edit')){
+        abort(403,"Não autorizado!");
+      }
+
       $rules=[
           'name' => 'required|string|max:255',
           'email' => 'required|string|email|max:255|unique:users',
@@ -172,8 +216,15 @@ class UsuarioController extends Controller
      */
     public function destroy($id)
     {
-        $usuario = User::find($id);
+      //Autenticação caso não tenha permissão para visualizar os cadastros  
+      if(Gate::denies('cadastro-view')){
+        abort(403,"Não autorizado!");
+      }
+      if(Gate::denies('usuario-delete')){
+        abort(403,"Não autorizado!");
+      }
 
-        $usuario->delete();
+      $usuario = User::find($id);
+      $usuario->delete();
     }
 }

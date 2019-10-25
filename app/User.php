@@ -51,4 +51,10 @@ class User extends Authenticatable
     {
       return $this->hasMany('App\Log');
     }
+
+    public function temUmNivelDestes($nivel)
+    {
+      $userNivel = $this->nivel;     
+      return $nivel->intersect($userNivel)->count();
+    }
 }

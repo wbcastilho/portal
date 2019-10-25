@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(NivelSeeder::class);
         $this->call(SituacaoSeeder::class);
         $this->call(PracaSeeder::class);
+        $this->call(PermissaoSeeder::class);
 
 
     }

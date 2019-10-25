@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class ModeloController extends Controller
 {
@@ -20,6 +21,14 @@ class ModeloController extends Controller
      */
     public function index(Request $request)
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros  
+        if(Gate::denies('cadastro-view')){
+            abort(403,"Não autorizado!");
+        }
+        if(Gate::denies('modelo-view')){
+            abort(403,"Não autorizado!");
+        }
+
         $searchText=trim($request->get('searchText'));
 
         $modelos = Modelo::where('nome', 'like', '%' . $searchText . '%')
@@ -47,6 +56,14 @@ class ModeloController extends Controller
      */
     public function create()
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros  
+        if(Gate::denies('cadastro-view')){
+            abort(403,"Não autorizado!");
+        }
+        if(Gate::denies('modelo-create')){
+            abort(403,"Não autorizado!");
+        }
+
         $fabricantes = Fabricante::orderBy("nome","ASC")->get();
         $tipos = Tipo::orderBy("nome","ASC")->get();
 
@@ -68,6 +85,14 @@ class ModeloController extends Controller
      */
     public function store(Request $request)
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros  
+        if(Gate::denies('cadastro-view')){
+            abort(403,"Não autorizado!");
+        }
+        if(Gate::denies('modelo-create')){
+            abort(403,"Não autorizado!");
+        }
+
         $rules=[
             'fabricante_id' => 'required',
             'tipo_id' => 'required',
@@ -131,6 +156,14 @@ class ModeloController extends Controller
      */
     public function edit($id)
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros  
+        if(Gate::denies('cadastro-view')){
+            abort(403,"Não autorizado!");
+        }
+        if(Gate::denies('modelo-edit')){
+            abort(403,"Não autorizado!");
+        }
+
         $fabricantes = Fabricante::withTrashed()->orderBy("nome","ASC")->get();
         $tipos = Tipo::withTrashed()->orderBy("nome","ASC")->get();
         $modelo = Modelo::find($id);
@@ -154,6 +187,14 @@ class ModeloController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros  
+        if(Gate::denies('cadastro-view')){
+            abort(403,"Não autorizado!");
+        }
+        if(Gate::denies('modelo-edit')){
+            abort(403,"Não autorizado!");
+        }
+
         $rules=[
             'fabricante_id' => 'required',
             'tipo_id' => 'required',
@@ -215,18 +256,17 @@ class ModeloController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        if(Modelo::has('equipamento')->find($id) == null)
-        {
-            $modelo = Modelo::find($id);
-            $modelo->delete();
+    {       
+        //Autenticação caso não tenha permissão para visualizar os cadastros  
+        if(Gate::denies('cadastro-view')){
+            abort(403,"Não autorizado!");
         }
-        else
-        {
-            return response()->json([
-                'fail' => true                
-            ]);
-        }            
+        if(Gate::denies('modelo-delete')){
+            abort(403,"Não autorizado!");
+        }
+        
+        $modelo = Modelo::find($id);
+        $modelo->delete();          
     }
 
     public function getModelos1($fabricante_id, $tipo_id)

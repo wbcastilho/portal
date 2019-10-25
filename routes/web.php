@@ -41,6 +41,9 @@ Route::group(['middleware' => 'auth','prefix' => '/'], function(){
       Route::resource('tipos', 'TipoController');   
       Route::resource('usuarios', 'UsuarioController');   
       Route::resource('modelos', 'ModeloController');  
+
+      Route::post('permissoes/{nivel_id}/{permissao_id}/excluir', 'PermissaoController@excluir');
+      Route::resource('permissoes', 'PermissaoController');  
       
       Route::prefix('localizacoes')->group(function () {    
         Route::resource('localizacao1', 'Localizacao1Controller');   

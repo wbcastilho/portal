@@ -59,9 +59,9 @@
                 <tr>                             
                     <td class="text-center" style="vertical-align:middle;">{{ $setor->id }}</td>
                     <td style="vertical-align:middle;">{{ $setor->nome }}</td>
-                    <td>                         
-                    <a href="{{ route('setores.edit',$setor->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
-                    <button title="Deletar" class="btn btn-danger btn-sm btnExcluir"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $setor->id }}" class="hidDeleteId"></button>                                   
+                    <td>                                        
+                        <a href="{{ route('setores.edit',$setor->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
+                        <button title="Deletar" class="btn btn-danger btn-sm btnExcluir"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $setor->id }}" class="hidDeleteId"></button>                                                        
                     </td>
                 </tr>
             @endforeach

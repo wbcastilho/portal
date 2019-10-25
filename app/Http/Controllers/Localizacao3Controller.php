@@ -11,6 +11,7 @@ use App\Cidade;
 use App\Praca;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Gate;
 
 class Localizacao3Controller extends Controller
 {
@@ -21,6 +22,14 @@ class Localizacao3Controller extends Controller
      */
     public function index(Request $request)
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros  
+        if(Gate::denies('cadastro-view')){
+            abort(403,"Não autorizado!");
+        }
+        if(Gate::denies('localizacao-view')){
+            abort(403,"Não autorizado!");
+        }
+
         $searchText=trim($request->get('searchText'));
        
         $localizacoes = Localizacao3::where('praca_id', '=', auth()->user()->praca->id)
@@ -58,6 +67,14 @@ class Localizacao3Controller extends Controller
      */
     public function create()
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros  
+        if(Gate::denies('cadastro-view')){
+            abort(403,"Não autorizado!");
+        }
+        if(Gate::denies('localizacao-create')){
+            abort(403,"Não autorizado!");
+        }
+
         $estados = Estado::orderBy("nome","ASC")->get();
         $cidades = Cidade::where('id', '=', 0)->get();
         $localizacoes1 = Localizacao1::where('id', '=', 0)->get();
@@ -80,7 +97,15 @@ class Localizacao3Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {        
+    {       
+        //Autenticação caso não tenha permissão para visualizar os cadastros  
+        if(Gate::denies('cadastro-view')){
+            abort(403,"Não autorizado!");
+        }
+        if(Gate::denies('localizacao-create')){
+            abort(403,"Não autorizado!");
+        }
+
         $validator = Validator::make($request->all(), [
             'estado_id' => [
                 'required',
@@ -139,6 +164,14 @@ class Localizacao3Controller extends Controller
      */
     public function edit($id)
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros  
+        if(Gate::denies('cadastro-view')){
+            abort(403,"Não autorizado!");
+        }
+        if(Gate::denies('localizacao-edit')){
+            abort(403,"Não autorizado!");
+        }
+
         $estados = Estado::orderBy("nome","ASC")->get();
         $cidades = Cidade::orderBy("nome","ASC")->get();
         $localizacoes1 = Localizacao1::withTrashed()->where('praca_id', '=', auth()->user()->praca->id)->orderBy("nome","ASC")->get();       
@@ -164,6 +197,14 @@ class Localizacao3Controller extends Controller
      */
     public function update(Request $request, $id)
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros  
+        if(Gate::denies('cadastro-view')){
+            abort(403,"Não autorizado!");
+        }
+        if(Gate::denies('localizacao-edit')){
+            abort(403,"Não autorizado!");
+        }
+
         $validator = Validator::make($request->all(), [
             'estado_id' => [
                 'required',
@@ -210,19 +251,17 @@ class Localizacao3Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        if(Localizacao3::has('localizacao_equipamentos')->find($id) == null)
-        {
-            $localizacao = Localizacao3::find($id);
-
-            $localizacao->delete();
+    {       
+        //Autenticação caso não tenha permissão para visualizar os cadastros  
+        if(Gate::denies('cadastro-view')){
+            abort(403,"Não autorizado!");
         }
-        else
-        {
-            return response()->json([
-                'fail' => true                
-            ]);
-        }            
+        if(Gate::denies('localizacao-delete')){
+            abort(403,"Não autorizado!");
+        }
+
+        $localizacao = Localizacao3::find($id);
+        $localizacao->delete();               
     }
 
     public function getLocalizacao4($id)

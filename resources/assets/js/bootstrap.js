@@ -14,6 +14,8 @@ try {
     require('bootstrap');
 } catch (e) {}
 
+require('slimscroll/example/ssmaster/jquery.slimscroll');
+
 require('admin-lte');
 
 /**

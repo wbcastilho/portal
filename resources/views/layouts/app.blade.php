@@ -10,7 +10,7 @@
         <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">  
         @yield('css')     
     </head>
-    <body class="hold-transition skin-blue sidebar-mine">       
+    <body class="hold-transition skin-blue fixed">       
         <div class="wrapper">
         
           <!-- TOPO Navegação -->
@@ -45,8 +45,14 @@
       </div>            
     
       <script src="{{asset('js/app.js')}}"></script>  
-      <script src="{{asset('js/slim.js')}}"></script>   
+       
+      <script>
+        $(document).ready(function () {
+          $('.sidebar-menu').tree()
+        })
+      </script>
      
-      @yield('js')      
+      @yield('js')   
+
     </body>
 </html>

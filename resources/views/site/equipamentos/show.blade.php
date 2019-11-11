@@ -40,9 +40,15 @@
 
 @section('content')   
     <div style="margin-bottom:10px;" class="col-sm-12 col-md-12 col-lg-12">
-        <a href="{{ route('equipamentos.edit',$equipamento->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i> Editar</a>        
-        <button title="Deletar" class="btn btn-danger btnExcluir btn-sm"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $equipamento->id }}" class="hidDeleteId"> Excluir</button>
-        <a href="{{ route('equipamentos.movimentar',$equipamento->id) }}" class="btn btn-success btn-sm" type="button" title="Movimentar"><i class="fa fa-fw fa-map-marker"></i> Movimentar</a>
+        @can('equipamento-edit')
+            <a href="{{ route('equipamentos.edit',$equipamento->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i> Editar</a>        
+        @endcan
+        @can('equipamento-delete')
+            <button title="Deletar" class="btn btn-danger btnExcluir btn-sm"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $equipamento->id }}" class="hidDeleteId"> Excluir</button>
+        @endcan
+        @can('equipamento-movimentar')
+            <a href="{{ route('equipamentos.movimentar',$equipamento->id) }}" class="btn btn-success btn-sm" type="button" title="Movimentar"><i class="fa fa-fw fa-map-marker"></i> Movimentar</a>
+        @endcan
     </div>
     
     <div class="col-sm-3 col-md-3 col-lg-3"> 

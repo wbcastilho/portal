@@ -31,4 +31,9 @@ class Cidade extends Model
       return $this->hasMany('App\LocalizacaoEquipamentos');
     }
 
+    public function fornecedores()
+    {
+      return $this->hasMany('App\Fornecedor');
+    }
+
 }

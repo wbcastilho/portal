@@ -10,7 +10,7 @@
         <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">  
         @yield('css')     
     </head>
-    <body class="hold-transition skin-blue sidebar-mini">       
+    <body class="hold-transition skin-blue sidebar-mine">       
         <div class="wrapper">
         
           <!-- TOPO Navegação -->
@@ -18,7 +18,7 @@
       
           <!-- MENU lateral -->
           @include('layouts._sidebar') 
-
+          
           <div class="content-wrapper">        
             <section class="content-header">
                 <h1>@Yield('titulo')</h1>
@@ -41,14 +41,12 @@
                   </div>-->
               </div>
           </section>
-        </div>
-
-          <!-- MENU lateral -->
-          @include('layouts._sidebar') 
-                    
-        </div>            
+        </div>      
+      </div>            
     
-      <script src="{{asset('js/app.js')}}"></script> 
+      <script src="{{asset('js/app.js')}}"></script>  
+      <script src="{{asset('js/slim.js')}}"></script>   
+     
       @yield('js')      
     </body>
 </html>

@@ -35,7 +35,9 @@
 @section('content')        
    
     <form action="modelos" method="GET">
-        <a href="{{ route('modelos.create') }}" type="button" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Adicionar</a>                
+        @can('modelo-create') 
+            <a href="{{ route('modelos.create') }}" type="button" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Adicionar</a>                
+        @endcan
         {{csrf_field()}}
         <div class="input-group col-xs-3 pull-right" >   
             <input type="text" class="form-control" name="searchText" placeholder="Pesquisa" value="{{$searchText}}">
@@ -63,9 +65,13 @@
                     <td style="vertical-align:middle;">{{ $modelo->fabricante->nome }}</td>
                     <td style="vertical-align:middle;">{{ $modelo->tipo->nome }}</td>
                     <td style="vertical-align:middle;">{{ $modelo->nome }}</td>
-                    <td>                         
-                    <a href="{{ route('modelos.edit',$modelo->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
-                    <button title="Deletar" class="btn btn-danger btn-sm btnExcluir"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $modelo->id }}" class="hidDeleteId"></button>                                   
+                    <td>    
+                        @can('modelo-edit')                      
+                            <a href="{{ route('modelos.edit',$modelo->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
+                        @endcan
+                        @can('modelo-delete') 
+                            <button title="Deletar" class="btn btn-danger btn-sm btnExcluir"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $modelo->id }}" class="hidDeleteId"></button>                                   
+                        @endcan
                     </td>
                 </tr>
             @endforeach

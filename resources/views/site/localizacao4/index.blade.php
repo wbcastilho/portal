@@ -35,7 +35,9 @@
 @section('content')        
    
     <form action="localizacao4" method="GET">
-        <a href="{{ route('localizacao4.create') }}" type="button" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Adicionar</a>                
+        @can('localizacao-create') 
+            <a href="{{ route('localizacao4.create') }}" type="button" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Adicionar</a>                
+        @endcan
         {{csrf_field()}}
         <div class="input-group col-xs-3 pull-right" >   
             <input type="text" class="form-control" name="searchText" placeholder="Pesquisa" value="{{$searchText}}">
@@ -69,9 +71,13 @@
                     <td style="vertical-align:middle;">{{ $localizacao->localizacao3->localizacao2->nome }}</td>
                     <td style="vertical-align:middle;">{{ $localizacao->localizacao3->nome }}</td>
                     <td style="vertical-align:middle;">{{ $localizacao->nome }}</td>
-                    <td>                         
-                    <a href="{{ route('localizacao4.edit',$localizacao->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
-                    <button title="Deletar" class="btn btn-danger btn-sm btnExcluir"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $localizacao->id }}" class="hidDeleteId"></button>                                   
+                    <td>     
+                        @can('localizacao-edit')                     
+                            <a href="{{ route('localizacao4.edit',$localizacao->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
+                        @endcan
+                        @can('localizacao-delete') 
+                            <button title="Deletar" class="btn btn-danger btn-sm btnExcluir"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $localizacao->id }}" class="hidDeleteId"></button>                                   
+                        @endcan
                     </td>
                 </tr>
             @endforeach

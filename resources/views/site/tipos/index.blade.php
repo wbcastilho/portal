@@ -35,7 +35,9 @@
 @section('content')        
    
     <form action="tipos" method="GET">
-        <a href="{{ route('tipos.create') }}" type="button" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Adicionar</a>                
+        @can('tipo-create') 
+            <a href="{{ route('tipos.create') }}" type="button" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Adicionar</a>                
+        @endcan
         {{csrf_field()}}
         <div class="input-group col-xs-3 pull-right" >   
             <input type="text" class="form-control" name="searchText" placeholder="Pesquisa" value="{{$searchText}}">
@@ -59,9 +61,13 @@
                 <tr>                             
                     <td class="text-center" style="vertical-align:middle;">{{ $tipo->id }}</td>
                     <td style="vertical-align:middle;">{{ $tipo->nome }}</td>
-                    <td>                         
-                    <a href="{{ route('tipos.edit',$tipo->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
-                    <button title="Deletar" class="btn btn-danger btn-sm btnExcluir"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $tipo->id }}" class="hidDeleteId"></button>                                   
+                    <td>     
+                        @can('tipo-edit')                     
+                            <a href="{{ route('tipos.edit',$tipo->id) }}" title="Editar" type="button" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
+                        @endcan
+                        @can('tipo-delete') 
+                            <button title="Deletar" class="btn btn-danger btn-sm btnExcluir"><i class="fa fa-trash"></i><input type="hidden" name="hidDeleteId" value="{{ $tipo->id }}" class="hidDeleteId"></button>                                   
+                        @endcan
                     </td>
                 </tr>
             @endforeach

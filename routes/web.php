@@ -42,6 +42,9 @@ Route::group(['middleware' => 'auth','prefix' => '/'], function(){
       Route::resource('usuarios', 'UsuarioController');   
       Route::resource('modelos', 'ModeloController');  
 
+      Route::get('fornecedores/cidades/{id}', 'EstadoController@getCidades');
+      Route::resource('fornecedores', 'FornecedorController');  
+
       Route::post('permissoes/{nivel_id}/{permissao_id}/excluir', 'PermissaoController@excluir');
       Route::resource('permissoes', 'PermissaoController');  
       

@@ -14,6 +14,7 @@ use App\Estado;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Gate;
 
 class EquipamentoController extends Controller
 {
@@ -24,9 +25,14 @@ class EquipamentoController extends Controller
      */
     public function index(Request $request)
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros       
+        if(Gate::denies('equipamento-view')){
+            abort(403,"Não autorizado!");
+        }
+
         $searchText=trim($request->get('searchText'));
                        
-        $equipamentos = DB::table('localizacao_equipamentos')
+        /*$equipamentos = DB::table('localizacao_equipamentos')
         ->join(DB::raw('(SELECT MAX(localizacao_equipamentos.data) AS data, localizacao_equipamentos.equipamento_id FROM localizacao_equipamentos GROUP BY localizacao_equipamentos.equipamento_id) AS b'), 
         function($join)
         {
@@ -79,9 +85,9 @@ class EquipamentoController extends Controller
         ->orderBy('localizacoes2.nome', 'asc')
         ->orderBy('localizacoes3.nome', 'asc')
         ->orderBy('localizacoes4.nome', 'asc')
-        ->paginate(10);          
+        ->paginate(10);*/          
 
-        /*$equipamentos = Equipamento::where('praca_id', '=', auth()->user()->praca->id)
+        $equipamentos = Equipamento::where('praca_id', '=', auth()->user()->praca->id)
         ->where(function ($query) use ($searchText)  { 
             $query->orWhere('apelido', 'like', '%' . $searchText . '%');
             $query->orWhere('numeroserie', 'like', '%' . $searchText . '%');
@@ -123,7 +129,7 @@ class EquipamentoController extends Controller
                     });
                 });
             });              
-        })->paginate(10);*/ 
+        })->paginate(10); 
         
         //dd($equipamentos);
 
@@ -143,6 +149,11 @@ class EquipamentoController extends Controller
      */
     public function create()
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros       
+        if(Gate::denies('equipamento-create')){
+            abort(403,"Não autorizado!");
+        }
+
         $fabricantes = Fabricante::orderBy("nome","ASC")->get();
         $tipos = Tipo::orderBy("nome","ASC")->get();
         $modelos = Modelo::where('id', '=', 0)->get();
@@ -166,6 +177,11 @@ class EquipamentoController extends Controller
      */
     public function store(Request $request)
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros       
+        if(Gate::denies('equipamento-create')){
+            abort(403,"Não autorizado!");
+        }
+
         $validator = Validator::make($request->all(), [
             'fabricante_id' => [
                 'required',
@@ -258,6 +274,11 @@ class EquipamentoController extends Controller
      */
     public function show($id)
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros       
+        if(Gate::denies('equipamento-view')){
+            abort(403,"Não autorizado!");
+        }
+
          //Faz a consulta pesquisando pelo id
          $equipamento = Equipamento::find($id);
          $situacoes = Situacao::where('id','=',3)->orWhere('id','=',7)->orWhere('id','=',8)->orWhere('id','=',9)->get();
@@ -280,6 +301,11 @@ class EquipamentoController extends Controller
      */
     public function edit($id)
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros       
+        if(Gate::denies('equipamento-edit')){
+            abort(403,"Não autorizado!");
+        }
+
         $fabricantes = Fabricante::withTrashed()->orderBy("nome","ASC")->get();
         $tipos = Tipo::withTrashed()->orderBy("nome","ASC")->get();        
         $setores = Setor::withTrashed()->orderBy("nome","ASC")->get();              
@@ -307,6 +333,11 @@ class EquipamentoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros       
+        if(Gate::denies('equipamento-edit')){
+            abort(403,"Não autorizado!");
+        }
+
         $validator = Validator::make($request->all(), [
             'fabricante_id' => [               
                 Rule::notIn('0'),
@@ -359,7 +390,12 @@ class EquipamentoController extends Controller
     }
 
     public function excluir(Request $request, $id)
-    {                                    
+    {             
+        //Autenticação caso não tenha permissão para visualizar os cadastros       
+        if(Gate::denies('equipamento-delete')){
+            abort(403,"Não autorizado!");
+        }
+
         DB::beginTransaction();
 
         $equipamento = Equipamento::find($id);
@@ -401,15 +437,16 @@ class EquipamentoController extends Controller
         return response()->json([
             'fail' => false,
             'redirect_url' => url('equipamentos')
-        ]);
-
-
-
-      
+        ]);      
     }
 
     public function movimentar($id)
-    {             
+    {        
+        //Autenticação caso não tenha permissão para visualizar os cadastros       
+        if(Gate::denies('equipamento-movimentar')){
+            abort(403,"Não autorizado!");
+        }
+
         $fabricantes = Fabricante::orderBy("nome","ASC")->get();
         $tipos = Tipo::orderBy("nome","ASC")->get();
         $modelos = Modelo::orderBy("nome","ASC")->get();
@@ -430,6 +467,11 @@ class EquipamentoController extends Controller
 
     public function movimentacao(Request $request, $id)
     {
+        //Autenticação caso não tenha permissão para visualizar os cadastros       
+        if(Gate::denies('equipamento-movimentar')){
+            abort(403,"Não autorizado!");
+        }
+
         $validator = Validator::make($request->all(), [                      
             'observacao' => 'required_if:situacao_id,5'                                    
         ]);

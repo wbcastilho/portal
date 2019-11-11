@@ -33,11 +33,10 @@
 @endsection
 
 @section('content')        
-   
-    <form action="permissoes" method="GET">
+      
+    @can('permissao-create') 
         <a href="{{ route('permissoes.create') }}" type="button" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> Adicionar</a>                       
-    </form> 
-
+    @endcan
     <div style="margin-top:10px;" class="box-group" id="accordion">
         @foreach ($niveis as $nivel)
             <div class="panel box">

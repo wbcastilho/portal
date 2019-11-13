@@ -2,16 +2,12 @@
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar" style="height:auto;">  
-        {{--<div style="height: 40px;" class="user-panel">         
-            <div class="pull-left info">
-              <p>{{ auth()->user()->praca->nome }}</p>             
-            </div>
-        </div>--}}                
-      <!-- sidebar menu: : style can be found in sidebar.less -->
-
-      
-      <ul class="sidebar-menu tree" data-widget="tree">
-         
+      <div style="height: 40px;" class="user-panel">         
+          <div class="pull-left info">
+            <p>{{ auth()->user()->praca->nome }}</p>             
+          </div>
+      </div>                     
+      <ul class="sidebar-menu tree" data-widget="tree">         
         <li class="header">MENU PRINCIPAL</li>
         <li class="treeview">
           <a href="#">

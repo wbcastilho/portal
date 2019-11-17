@@ -6873,7 +6873,7 @@ body {
   }
 }
 .content-wrapper {
-  min-height: calc(100% - 102px);
+  min-height: calc(100% - 102px); 
   background-color: #ecf0f5;
   z-index: 800;
 }

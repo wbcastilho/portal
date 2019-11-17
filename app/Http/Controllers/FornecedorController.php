@@ -177,6 +177,7 @@ class FornecedorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $fornecedor = Fornecedor::find($id);
+        $fornecedor->delete();
     }
 }

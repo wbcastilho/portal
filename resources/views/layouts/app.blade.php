@@ -2,15 +2,16 @@
 <html lang="{{ app()->getLocale() }}">
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">       
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Laravel</title>
+       
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">  
         @yield('css')     
     </head>
-    <body class="hold-transition skin-blue fixed">       
+    <body class="hold-transition skin-blue sidebar-mini">       
         <div class="wrapper">
         
           <!-- TOPO Navegação -->

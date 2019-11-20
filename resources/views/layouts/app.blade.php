@@ -12,7 +12,7 @@
         @yield('css')     
     </head>
     <body class="hold-transition skin-blue sidebar-mini">       
-        <div class="wrapper">
+      <div class="wrapper">
         
           <!-- TOPO Navegação -->
           @include('layouts._nave')  
@@ -42,7 +42,12 @@
                   </div>-->
               </div>
           </section>
-        </div>      
+        </div> 
+        
+        <!-- /.control-sidebar -->
+        <!-- Add the sidebar's background. This div must be placed
+            immediately after the control sidebar -->
+        <div class="control-sidebar-bg"></div>     
       </div>            
     
       <script src="{{asset('js/app.js')}}"></script>  

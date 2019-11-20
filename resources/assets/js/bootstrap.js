@@ -9,12 +9,16 @@ window.Popper = require('popper.js').default;
  */
 
 try {
-    window.$ = window.jQuery = require('jquery');
+    window.$ = window.jQuery = require('admin-lte/bower_components/jquery/dist/jquery.min');
 
-    require('bootstrap');
+    require('admin-lte/bower_components/bootstrap/dist/js/bootstrap.min');
 } catch (e) {}
 
-require('slimscroll/example/ssmaster/jquery.slimscroll');
+//require('slimscroll/example/ssmaster/jquery.slimscroll');
+
+require('admin-lte/bower_components/jquery-slimscroll/jquery.slimscroll.min');
+
+require('admin-lte/bower_components/fastclick/lib/fastclick.js');
 
 require('admin-lte');
 
